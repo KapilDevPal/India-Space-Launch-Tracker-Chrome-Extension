@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1050103398154",
+    "project_id": "veerexa",
+    "storage_bucket": "veerexa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050103398154:android:fcb5bbe0cf006c506f84f3",
+        "android_client_info": {
+          "package_name": "com.veerexa.school"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfP_ZVgBRXZAysB9JI4VMDuJDK_ccQfos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
