@@ -248,17 +248,16 @@ function renderHeroCard(launch) {
   heroFavStar.className = isFav ? "favorite-star active" : "favorite-star";
   
   // Clear events and attach favorite toggle
-  heroFavStar.replaceWith(heroFavStar.cloneNode(true));
-  const newFavStar = document.getElementById("heroFavStar");
-  newFavStar.addEventListener("click", (e) => {
+  heroFavStar.onclick = (e) => {
     e.stopPropagation();
     toggleFavorite(launch.id);
-  });
+  };
   
   // Modal click
-  featuredSection.replaceWith(featuredSection.cloneNode(true));
-  const newFeaturedSec = document.getElementById("featuredSection");
-  newFeaturedSec.addEventListener("click", () => openMissionModal(launch));
+  featuredSection.onclick = () => openMissionModal(launch);
+  
+  // Set launch date on a data attribute for the timer
+  featuredSection.setAttribute("data-launchtime", launch.launch_date);
 }
 
 // Render dynamic launch records items list
@@ -325,14 +324,12 @@ function startCountdownTicker() {
 
 // Featured countdown clock renderer
 function tickHeroCountdown() {
-  const upcomingFuture = launches
-    .filter(l => new Date(l.launch_date) > Date.now())
-    .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
-    
-  if (upcomingFuture.length === 0 || featuredSection.classList.contains("hidden")) return;
+  if (featuredSection.classList.contains("hidden")) return;
   
-  const nextLaunch = upcomingFuture[0];
-  const diff = new Date(nextLaunch.launch_date) - Date.now();
+  const launchTimeStr = featuredSection.getAttribute("data-launchtime");
+  if (!launchTimeStr) return;
+  
+  const diff = new Date(launchTimeStr) - Date.now();
   
   if (diff <= 0) {
     // Liftoff occurred! Re-sync
