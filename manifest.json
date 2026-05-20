@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "India Space Launch Tracker",
   "version": "1.0.0",
-  "description": "Track upcoming Indian space launches from ISRO and private space companies with live countdown timers, mission alerts, and launch notifications.",
+  "description": "Track Indian space launches from ISRO and private companies with live countdowns, alerts, and notifications",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
