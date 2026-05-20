@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Space Launch Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- --- HEADER --- -->
+  <header class="header">
+    <div class="logo-container">
+      <span class="logo-rocket" id="headerRocket">🚀</span>
+      <div>
+        <h1 class="app-title">INDIA SPACE</h1>
+        <div class="sync-status">
+          <span id="syncSpinner" class="hidden">🔄</span>
+          <span id="syncText">Syncing...</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="icon-btn" id="favsToggleBtn" title="Show Favorites Only">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <button class="icon-btn" id="settingsToggleBtn" title="Developer Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- --- FEATURED CARD: NEXT LAUNCH --- -->
+  <section class="glass-panel featured-card" id="featuredSection">
+    <div class="flex justify-between items-center mb-2">
+      <span class="badge-agency" id="heroAgency">ISRO</span>
+      <div class="live-telemetry">
+        <span class="telemetry-dot"></span>
+        <span>LIVE TELEMETRY</span>
+      </div>
+    </div>
+    
+    <div class="flex justify-between items-start mb-3">
+      <div class="relative" style="max-width: 80%;">
+        <h2 class="mission-name-hero" id="heroMissionName">Gaganyaan G1</h2>
+        <p class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-primary);" id="heroRocketName">LVM3-M5 • Low Earth Orbit</p>
+      </div>
+      <span class="favorite-star" id="heroFavStar" title="Add to reminders">★</span>
+    </div>
+    
+    <!-- Countdowns -->
+    <div class="countdown-container" id="heroCountdown">
+      <div class="countdown-box">
+        <span class="countdown-val font-space" id="daysVal">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-box">
+        <span class="countdown-val font-space" id="hoursVal">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-box">
+        <span class="countdown-val font-space" id="minsVal">00</span>
+        <span class="countdown-label">Mins</span>
+      </div>
+      <div class="countdown-box">
+        <span class="countdown-val font-space" id="secsVal">00</span>
+        <span class="countdown-label">Secs</span>
+      </div>
+    </div>
+    
+    <!-- Launch Window Date Display -->
+    <div class="flex justify-between items-center mt-3 text-xs">
+      <span style="color: var(--text-secondary);">Launch Date:</span>
+      <span class="font-bold font-space" style="color: var(--text-white);" id="heroLaunchDate">November 20, 2026</span>
+    </div>
+  </section>
+
+  <!-- --- SEARCH & CONTROLS --- -->
+  <section class="controls-container">
+    <div class="search-box">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search mission name or rocket...">
+    </div>
+    
+    <!-- Filter Chips Scroll -->
+    <div class="filter-scroll" id="agencyFilterScroll">
+      <button class="chip active" data-agency="all">All</button>
+      <button class="chip" data-agency="isro">ISRO</button>
+      <button class="chip" data-agency="skyroot">Skyroot</button>
+      <button class="chip" data-agency="agnikul">Agnikul</button>
+      <button class="chip" data-agency="pixxel">Pixxel</button>
+      <button class="chip" data-agency="others">Others</button>
+    </div>
+  </section>
+
+  <!-- --- UPCOMING LAUNCHES LIST --- -->
+  <section class="upcoming-section">
+    <h3 class="section-title">Upcoming Schedules</h3>
+    <div class="launches-list" id="launchesList">
+      <!-- Loading skeletons (initial state) -->
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- --- FOOTER --- -->
+  <footer class="footer">
+    <span class="footer-power">POWERED BY <a href="https://space.veerexa.com" target="_blank" class="footer-power-link">VEEREXA SPACE API</a></span>
+    <div class="footer-links">
+      <a href="https://space.veerexa.com/developers/docs" target="_blank" class="footer-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+        API Docs
+      </a>
+      <a href="https://github.com" target="_blank" class="footer-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+    </div>
+  </footer>
+
+  <!-- --- MODAL: MISSION DETAILS --- -->
+  <div class="overlay" id="detailOverlay">
+    <div class="modal-content">
+      <div class="modal-header-banner">
+        <span class="modal-header-rocket">🚀</span>
+        <h3 class="modal-title" id="modalTitle">Mission Profile</h3>
+        <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Launch Vehicle</span>
+            <span class="detail-val" id="modalVehicle">LVM3</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Agency / Provider</span>
+            <span class="detail-val" id="modalAgency">ISRO</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Launch Window</span>
+            <span class="detail-val" id="modalDate">November 20, 2026</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mission Status</span>
+            <span class="detail-val" id="modalStatus" style="color: var(--color-cyan);">Upcoming</span>
+          </div>
+        </div>
+        <div class="detail-item mb-3">
+          <span class="detail-label">Orbit Target</span>
+          <span class="detail-val" id="modalOrbit">Low Earth Orbit (LEO)</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Payload & Overview</span>
+          <div class="detail-desc-box" id="modalDesc">
+            Mission description goes here...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- MODAL: DEVELOPER SETTINGS --- -->
+  <div class="overlay" id="settingsOverlay">
+    <div class="modal-content">
+      <div class="modal-header-banner" style="background: linear-gradient(135deg, #1e293b, #0f172a);">
+        <span class="modal-header-rocket" style="opacity: 0.08;">⚙️</span>
+        <h3 class="modal-title">Developer Settings</h3>
+        <button class="modal-close-btn" id="settingsCloseBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="settingsForm">
+          <div class="form-group">
+            <label class="form-label" for="settingsApiUrl">API Endpoint URL</label>
+            <input type="text" class="form-input" id="settingsApiUrl" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="settingsApiKey">Developer API Key</label>
+            <input type="password" class="form-input" id="settingsApiKey" required placeholder="isro_live_...">
+          </div>
+          
+          <div class="toggle-container">
+            <div>
+              <span class="form-label" style="margin-bottom: 2px;">Launch Notifications</span>
+              <span class="text-xs" style="color: var(--text-muted);">Notify T-24h, T-1h, and Liftoff</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="settingsReminders">
+              <span class="slider"></span>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn-primary">Save Configuration</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+// Background service worker for India Space Launch Tracker Extension
+
+const DEFAULT_API_URL = "https://space.veerexa.com/api/space/upcoming_launches";
+const FALLBACK_API_KEY = "isro_live_7e96e0d26a773dec3256864c91f93681";
+
+// Mock data to seed storage immediately so the extension has a valid state on load or offline
+const MOCK_LAUNCHES = [
+  {
+    id: 1,
+    mission_name: "Gaganyaan G1",
+    slug: "gaganyaan-g1",
+    launch_date: "2026-11-20T00:00:00.000Z",
+    status: "upcoming",
+    description: "First uncrewed orbital flight test of India's human spaceflight program. The mission will test the crew module's flight systems, propulsion, and re-entry operations in low Earth orbit.",
+    created_at: "2026-05-10T15:12:51.639Z",
+    name: "Gaganyaan G1",
+    company_name: "ISRO",
+    company_logo_url: "",
+    image_url: ""
+  },
+  {
+    id: 2,
+    mission_name: "Vikram-1 Flight 1",
+    slug: "vikram-1-flight-1",
+    launch_date: "2026-07-15T06:30:00.000Z",
+    status: "upcoming",
+    description: "Inaugural orbital flight of Vikram-1, Skyroot Aerospace's multi-stage carbon-fiber launch vehicle carrying commercial payloads into low Earth orbit.",
+    created_at: "2026-05-10T15:15:00.000Z",
+    name: "Vikram-1 Flight 1",
+    company_name: "Skyroot Aerospace",
+    company_logo_url: "",
+    image_url: ""
+  },
+  {
+    id: 3,
+    mission_name: "Agnibaan SOrTeD",
+    slug: "agnibaan-sorted",
+    launch_date: "2026-08-25T10:00:00.000Z",
+    status: "upcoming",
+    description: "Sub-orbital tech demonstrator and commercial launch by Agnikul Cosmos featuring their 3D-printed semi-cryogenic engine, Agnilet.",
+    created_at: "2026-05-10T15:20:00.000Z",
+    name: "Agnibaan SOrTeD",
+    company_name: "Agnikul Cosmos",
+    company_logo_url: "",
+    image_url: ""
+  },
+  {
+    id: 4,
+    mission_name: "Pixxel Firefly-3",
+    slug: "pixxel-firefly-3",
+    launch_date: "2026-09-12T04:15:00.000Z",
+    status: "upcoming",
+    description: "Deployment of Pixxel's next-generation commercial hyperspectral imaging satellites onto a polar sun-synchronous orbit via ISRO's PSLV.",
+    created_at: "2026-05-10T15:25:00.000Z",
+    name: "Pixxel Firefly-3",
+    company_name: "Pixxel",
+    company_logo_url: "",
+    image_url: ""
+  }
+];
+
+// Initialize extension state on installation
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("India Space Launch Tracker Extension Installed.");
+  
+  // Set default settings and seed mock data to guarantee immediate functionality
+  chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], (res) => {
+    const updates = {};
+    if (!res.apiUrl) updates.apiUrl = DEFAULT_API_URL;
+    if (!res.apiKey) updates.apiKey = FALLBACK_API_KEY;
+    if (!res.launchData) updates.launchData = MOCK_LAUNCHES;
+    if (res.remindersEnabled === undefined) updates.remindersEnabled = true;
+    if (!res.favorites) updates.favorites = [];
+    
+    chrome.storage.local.set(updates, () => {
+      console.log("Storage seeded successfully.");
+      updateBadge(res.launchData || MOCK_LAUNCHES);
+      scheduleSyncAlarm();
+      fetchLaunchData(); // Initial immediate sync
+    });
+  });
+});
+
+// Alarm Listener
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "sync_data") {
+    console.log("Executing background alarm sync...");
+    fetchLaunchData();
+  } else if (alarm.name.startsWith("notify_")) {
+    handleNotificationAlarm(alarm.name);
+  }
+});
+
+// Listen for messages from popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "forceSync") {
+    fetchLaunchData()
+      .then((data) => {
+        sendResponse({ success: true, count: data ? data.length : 0 });
+      })
+      .catch((err) => {
+        sendResponse({ success: false, error: err.message });
+      });
+    return true; // Keep channel open for async response
+  }
+});
+
+// Setup 5-minute background sync alarm
+function scheduleSyncAlarm() {
+  chrome.alarms.clear("sync_data", () => {
+    // Alarms in extensions are subject to background process constraints.
+    // In developer mode, alarms trigger at 1 minute minimum intervals, and 5 minutes in production.
+    chrome.alarms.create("sync_data", { periodInMinutes: 5 });
+    console.log("Sync alarm configured for 5 minutes.");
+  });
+}
+
+// Fetch launch schedules from API
+async function fetchLaunchData() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], async (res) => {
+      const url = res.apiUrl || DEFAULT_API_URL;
+      const key = res.apiKey || FALLBACK_API_KEY;
+      
+      console.log(`[Background Fetch] Requesting space API: ${url}`);
+      
+      try {
+        const headers = { "Content-Type": "application/json", "Accept": "application/json" };
+        
+        // If the user specifies the official Developer API endpoint, supply the authorization header
+        if (url.includes("/api/v1/")) {
+          headers["Authorization"] = `Bearer ${key}`;
+        }
+        
+        const response = await fetch(url, { headers, cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`Server returned HTTP ${response.status}`);
+        }
+        
+        const json = await response.json();
+        
+        // Extract launch array: API returns `{ upcoming_launches: [...] }` on public /api/space/upcoming_launches, 
+        // or `{ data: [...] }` on developers v1 endpoint. Let's normalize it.
+        let rawLaunches = [];
+        if (json.upcoming_launches && Array.isArray(json.upcoming_launches)) {
+          rawLaunches = json.upcoming_launches;
+        } else if (json.data && Array.isArray(json.data)) {
+          // Normalize JSON:API specs from developer v1 endpoints
+          rawLaunches = json.data.map(item => {
+            const attr = item.attributes || {};
+            return {
+              id: item.id || attr.id,
+              mission_name: attr.mission_name || attr.name,
+              slug: attr.slug,
+              launch_date: attr.launch_date,
+              status: attr.status || "upcoming",
+              description: attr.description || "",
+              company_name: attr.company_name || "ISRO",
+              company_logo_url: attr.company_logo_url || "",
+              image_url: attr.image_url || ""
+            };
+          });
+        } else {
+          throw new Error("Invalid response format. Missing upcoming_launches or data array.");
+        }
+        
+        if (rawLaunches.length === 0) {
+          console.warn("No upcoming launches found in API response.");
+        }
+        
+        // Save to storage
+        const oldLaunches = res.launchData || [];
+        chrome.storage.local.set({
+          launchData: rawLaunches,
+          lastSyncTime: new Date().toISOString()
+        }, () => {
+          console.log(`Synced ${rawLaunches.length} upcoming launches.`);
+          checkForNewLaunches(oldLaunches, rawLaunches);
+          updateBadge(rawLaunches);
+          scheduleLaunchAlertAlarms(rawLaunches, res.favorites || [], res.remindersEnabled);
+          resolve(rawLaunches);
+        });
+        
+      } catch (err) {
+        console.error("Failed to fetch space launch data: ", err);
+        // On failure, keep existing cached data but update sync time to signal offline status
+        chrome.storage.local.set({ lastSyncTime: new Date().toISOString() + " (Offline)" }, () => {
+          resolve(res.launchData || MOCK_LAUNCHES);
+        });
+      }
+    });
+  });
+}
+
+// Detect and notify if new space launches are added to the roster
+function checkForNewLaunches(oldList, newList) {
+  const oldIds = new Set(oldList.map(l => String(l.id)));
+  const newlyAdded = newList.filter(l => !oldIds.has(String(l.id)));
+  
+  newlyAdded.forEach(launch => {
+    chrome.notifications.create(`new_launch_${launch.id}`, {
+      type: "basic",
+      iconUrl: "icons/icon128.png",
+      title: "🚀 New Space Mission Added!",
+      message: `${launch.mission_name} by ${launch.company_name || 'ISRO'} is now scheduled for ${new Date(launch.launch_date).toLocaleDateString()}.`,
+      priority: 2
+    });
+  });
+}
+
+// Update Extension Action Toolbar Badge with countdown to immediate launch
+function updateBadge(launches) {
+  if (!launches || launches.length === 0) {
+    chrome.action.setBadgeText({ text: "" });
+    return;
+  }
+  
+  // Filter for valid future launches
+  const now = new Date();
+  const futureLaunches = launches
+    .filter(l => new Date(l.launch_date) > now)
+    .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
+    
+  if (futureLaunches.length === 0) {
+    chrome.action.setBadgeText({ text: "" });
+    return;
+  }
+  
+  const nextLaunch = futureLaunches[0];
+  const diffTime = new Date(nextLaunch.launch_date) - now;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  let badgeText = "";
+  if (diffDays <= 0) {
+    badgeText = "Live";
+  } else {
+    badgeText = `${diffDays}D`;
+  }
+  
+  chrome.action.setBadgeText({ text: badgeText });
+  chrome.action.setBadgeBackgroundColor({ color: "#0058be" }); // Slate Blue / Cyan glow base
+}
+
+// Schedule localized notification alarms for launches
+function scheduleLaunchAlertAlarms(launches, favorites, globalRemindersEnabled) {
+  // Clear any existing notification alarms to rebuild them cleanly
+  chrome.alarms.getAll(alarms => {
+    const notifyAlarms = alarms.filter(a => a.name.startsWith("notify_"));
+    notifyAlarms.forEach(alarm => chrome.alarms.clear(alarm.name));
+    
+    // If notifications are completely disabled, stop here
+    if (!globalRemindersEnabled) return;
+    
+    const now = Date.now();
+    const favSet = new Set(favorites.map(id => String(id)));
+    
+    launches.forEach(launch => {
+      const launchTime = new Date(launch.launch_date).getTime();
+      const isFavorited = favSet.has(String(launch.id));
+      
+      // We only alert for favorited missions or all missions?
+      // Alerting for all space missions is awesome, but we can prioritize favorites or send standard alerts.
+      // Let's schedule alarms for all upcoming missions if in future.
+      
+      // 24 Hours Alert
+      const time24h = launchTime - (24 * 60 * 60 * 1000);
+      if (time24h > now) {
+        chrome.alarms.create(`notify_24h_${launch.id}`, { when: time24h });
+      }
+      
+      // 1 Hour Alert
+      const time1h = launchTime - (60 * 60 * 1000);
+      if (time1h > now) {
+        chrome.alarms.create(`notify_1h_${launch.id}`, { when: time1h });
+      }
+      
+      // Launch Time Alert
+      if (launchTime > now) {
+        chrome.alarms.create(`notify_now_${launch.id}`, { when: launchTime });
+      }
+    });
+  });
+}
+
+// Handle trigger of specific notification alarm
+function handleNotificationAlarm(alarmName) {
+  const parts = alarmName.split("_");
+  if (parts.length < 3) return;
+  
+  const alertType = parts[1]; // "24h", "1h", "now"
+  const launchId = parts[2];
+  
+  chrome.storage.local.get(["launchData"], (res) => {
+    const launches = res.launchData || [];
+    const launch = launches.find(l => String(l.id) === String(launchId));
+    
+    if (!launch) return;
+    
+    let title = "";
+    let message = "";
+    
+    if (alertType === "24h") {
+      title = `🚀 24 Hours to Launch: ${launch.mission_name}`;
+      message = `The ${launch.company_name || 'ISRO'} ${launch.mission_name} mission is scheduled to launch in exactly 24 hours!`;
+    } else if (alertType === "1h") {
+      title = `⏰ T-Minus 1 Hour: ${launch.mission_name}`;
+      message = `The countdown is ticking! ${launch.mission_name} by ${launch.company_name || 'ISRO'} is launching in 1 hour. Get ready!`;
+    } else if (alertType === "now") {
+      title = `🔥 LIFTOFF! ${launch.mission_name} is launching!`;
+      message = `Go for launch! ${launch.mission_name} is scheduled for immediate liftoff from Sriharikota!`;
+    }
+    
+    chrome.notifications.create(`launch_alert_${alertType}_${launchId}`, {
+      type: "basic",
+      iconUrl: "icons/icon128.png",
+      title: title,
+      message: message,
+      priority: 2,
+      requireInteraction: alertType === "now" // Require user dismissal for actual launch
+    });
+  });
+}
