@@ -213,8 +213,8 @@ body {
   margin: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-image: url('icons/ChatGPT Image May 21, 2026, 12_14_14 AM_1400x560.png');
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-image: url('icons/background.png');
   background-size: cover;
   background-position: center;
   border-radius: 12px;
@@ -222,8 +222,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
+  padding: 20px;
   color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 .featured-card-modern::before {
