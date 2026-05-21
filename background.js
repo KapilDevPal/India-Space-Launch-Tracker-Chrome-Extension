@@ -1,4 +1,4 @@
-// Background service worker for India Space Launch Tracker Extension
+// Background service worker for ISRO Launch Tracker – India Space Missions Extension
 
 const DEFAULT_API_URL = "https://space.veerexa.com/api/space/upcoming_launches";
 const FALLBACK_API_KEY = "isro_live_7e96e0d26a773dec3256864c91f93681";
@@ -61,7 +61,7 @@ const MOCK_LAUNCHES = [
 
 // Initialize extension state on installation
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("India Space Launch Tracker Extension Installed.");
+  console.log("ISRO Launch Tracker – India Space Missions Extension Installed.");
   
   // Set default settings and seed mock data to guarantee immediate functionality
   chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], (res) => {

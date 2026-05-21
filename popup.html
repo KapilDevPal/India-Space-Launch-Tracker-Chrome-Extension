@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>India Space Launch Tracker</title>
+  <title>ISRO Launch Tracker – India Space Missions</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,54 +28,50 @@
       <button class="icon-btn" id="favsToggleBtn" title="Show Favorites Only">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </button>
-      <button class="icon-btn" id="settingsToggleBtn" title="Developer Settings">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      </button>
+
     </div>
   </header>
 
   <!-- --- FEATURED CARD: NEXT LAUNCH --- -->
-  <section class="glass-panel featured-card" id="featuredSection">
-    <div class="flex justify-between items-center mb-2">
-      <span class="badge-agency" id="heroAgency">ISRO</span>
-      <div class="live-telemetry">
-        <span class="telemetry-dot"></span>
-        <span>LIVE TELEMETRY</span>
+  <section class="glass-panel featured-card-modern" id="featuredSection">
+    <div class="hero-top-row flex justify-between items-start">
+      <!-- Countdowns -->
+      <div class="countdown-container-modern" id="heroCountdown">
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="daysVal">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="hoursVal">00</span>
+          <span class="countdown-label">Hrs</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="minsVal">00</span>
+          <span class="countdown-label">Mins</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="secsVal">00</span>
+          <span class="countdown-label">Secs</span>
+        </div>
+      </div>
+      
+      <div class="hero-top-right">
+        <span class="favorite-star" id="heroFavStar" title="Add to reminders">★</span>
       </div>
     </div>
     
-    <div class="flex justify-between items-start mb-3">
-      <div class="relative" style="max-width: 80%;">
-        <h2 class="mission-name-hero" id="heroMissionName">Gaganyaan G1</h2>
-        <p class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-primary);" id="heroRocketName">LVM3-M5 • Low Earth Orbit</p>
+    <div class="hero-bottom-row mt-4">
+      <div class="hero-date-badge mb-2">
+        <span id="heroLaunchDate">November 20, 2026</span>
       </div>
-      <span class="favorite-star" id="heroFavStar" title="Add to reminders">★</span>
-    </div>
-    
-    <!-- Countdowns -->
-    <div class="countdown-container" id="heroCountdown">
-      <div class="countdown-box">
-        <span class="countdown-val font-space" id="daysVal">00</span>
-        <span class="countdown-label">Days</span>
+      <div class="flex justify-between items-end">
+        <div>
+          <h2 class="mission-name-hero" id="heroMissionName">Gaganyaan G1</h2>
+          <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: rgba(255,255,255,0.8);" id="heroRocketName">LVM3-M5 • Low Earth Orbit</p>
+        </div>
+        <span class="badge-agency hidden" id="heroAgency">ISRO</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </div>
-      <div class="countdown-box">
-        <span class="countdown-val font-space" id="hoursVal">00</span>
-        <span class="countdown-label">Hours</span>
-      </div>
-      <div class="countdown-box">
-        <span class="countdown-val font-space" id="minsVal">00</span>
-        <span class="countdown-label">Mins</span>
-      </div>
-      <div class="countdown-box">
-        <span class="countdown-val font-space" id="secsVal">00</span>
-        <span class="countdown-label">Secs</span>
-      </div>
-    </div>
-    
-    <!-- Launch Window Date Display -->
-    <div class="flex justify-between items-center mt-3 text-xs">
-      <span style="color: var(--text-secondary);">Launch Date:</span>
-      <span class="font-bold font-space" style="color: var(--text-white);" id="heroLaunchDate">November 20, 2026</span>
     </div>
   </section>
 
@@ -164,42 +160,7 @@
     </div>
   </div>
 
-  <!-- --- MODAL: DEVELOPER SETTINGS --- -->
-  <div class="overlay" id="settingsOverlay">
-    <div class="modal-content">
-      <div class="modal-header-banner" style="background: linear-gradient(135deg, #1e293b, #0f172a);">
-        <span class="modal-header-rocket" style="opacity: 0.08;">⚙️</span>
-        <h3 class="modal-title">Developer Settings</h3>
-        <button class="modal-close-btn" id="settingsCloseBtn">✕</button>
-      </div>
-      <div class="modal-body">
-        <form id="settingsForm">
-          <div class="form-group">
-            <label class="form-label" for="settingsApiUrl">API Endpoint URL</label>
-            <input type="text" class="form-input" id="settingsApiUrl" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="settingsApiKey">Developer API Key</label>
-            <input type="password" class="form-input" id="settingsApiKey" required placeholder="isro_live_...">
-          </div>
-          
-          <div class="toggle-container">
-            <div>
-              <span class="form-label" style="margin-bottom: 2px;">Launch Notifications</span>
-              <span class="text-xs" style="color: var(--text-muted);">Notify T-24h, T-1h, and Liftoff</span>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="settingsReminders">
-              <span class="slider"></span>
-            </label>
-          </div>
-          
-          <button type="submit" class="btn-primary">Save Configuration</button>
-        </form>
-      </div>
-    </div>
-  </div>
+
 
   <script src="popup.js"></script>
 </body>

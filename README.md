@@ -1,4 +1,4 @@
-# 🚀 India Space Launch Tracker — Chrome Extension (Manifest V3)
+# 🚀 ISRO Launch Tracker – India Space Missions — Chrome Extension (Manifest V3)
 
 A gorgeous, futuristic Chrome Extension built to track upcoming Indian space launches from the Indian Space Research Organisation (ISRO) and revolutionary private Indian spaceflight corporations (Skyroot Aerospace, Agnikul Cosmos, Pixxel, Bellatrix Aerospace, Dhruva Space, etc.) in real-time.
 
@@ -71,7 +71,7 @@ The extension fetches from the **Veerexa Space API** via the background service 
 ## 🛒 Chrome Web Store Specifications
 
 ### Extension Name:
-> India Space Launch Tracker
+> ISRO Launch Tracker – India Space Missions
 
 ### Short Description:
 > Track upcoming Indian space launches from ISRO and private space companies with live countdown timers, mission alerts, and launch notifications.
@@ -79,7 +79,7 @@ The extension fetches from the **Veerexa Space API** via the background service 
 ### Detailed Web Store Description:
 > Explore the new era of Indian space exploration! 🚀
 > 
-> "India Space Launch Tracker" brings the cosmos directly to your Chrome toolbar. Stay up to date with real-time flight telemetry, ticking countdowns, payload specifications, and strategic orbital insertions from the Indian Space Research Organisation (ISRO) and pioneering private aerospace startups including Skyroot Aerospace, Agnikul Cosmos, Pixxel, and more!
+> "ISRO Launch Tracker – India Space Missions" brings the cosmos directly to your Chrome toolbar. Stay up to date with real-time flight telemetry, ticking countdowns, payload specifications, and strategic orbital insertions from the Indian Space Research Organisation (ISRO) and pioneering private aerospace startups including Skyroot Aerospace, Agnikul Cosmos, Pixxel, and more!
 > 
 > Key Features:
 > • Real-time T-Minus Countdown: Precision live timers updating every second for the next scheduled launch.

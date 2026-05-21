@@ -1,4 +1,4 @@
-// Controller logic for India Space Launch Tracker Action Popup
+// Controller logic for ISRO Launch Tracker – India Space Missions Action Popup
 
 // State Management
 let launches = [];
@@ -15,7 +15,7 @@ const syncSpinner = document.getElementById("syncSpinner");
 const syncText = document.getElementById("syncText");
 const themeToggleBtn = document.getElementById("themeToggleBtn");
 const favsToggleBtn = document.getElementById("favsToggleBtn");
-const settingsToggleBtn = document.getElementById("settingsToggleBtn");
+
 
 // Featured Elements
 const featuredSection = document.getElementById("featuredSection");
@@ -47,13 +47,6 @@ const modalStatus = document.getElementById("modalStatus");
 const modalOrbit = document.getElementById("modalOrbit");
 const modalDesc = document.getElementById("modalDesc");
 
-// Settings Elements
-const settingsOverlay = document.getElementById("settingsOverlay");
-const settingsCloseBtn = document.getElementById("settingsCloseBtn");
-const settingsForm = document.getElementById("settingsForm");
-const settingsApiUrl = document.getElementById("settingsApiUrl");
-const settingsApiKey = document.getElementById("settingsApiKey");
-const settingsReminders = document.getElementById("settingsReminders");
 
 // --- INITIALIZATION ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -92,12 +85,10 @@ function initDashboard() {
   // Set up interactive listeners
   themeToggleBtn.addEventListener("click", toggleTheme);
   favsToggleBtn.addEventListener("click", toggleFavoritesFilter);
-  settingsToggleBtn.addEventListener("click", openSettingsModal);
-  settingsCloseBtn.addEventListener("click", () => settingsOverlay.classList.remove("active"));
+
   modalCloseBtn.addEventListener("click", () => detailOverlay.classList.remove("active"));
   
-  // Settings Form Submit
-  settingsForm.addEventListener("submit", saveSettings);
+
   
   // Search filter keyup
   searchInput.addEventListener("input", (e) => {
@@ -407,37 +398,7 @@ function openMissionModal(launch) {
   detailOverlay.classList.add("active");
 }
 
-// Open advanced settings configuration popup
-function openSettingsModal() {
-  chrome.storage.local.get(["apiUrl", "apiKey", "remindersEnabled"], (res) => {
-    settingsApiUrl.value = res.apiUrl || DEFAULT_API_URL;
-    settingsApiKey.value = res.apiKey || "";
-    settingsReminders.checked = res.remindersEnabled !== false;
-    
-    settingsOverlay.classList.add("active");
-  });
-}
 
-// Settings submit processing
-function saveSettings(e) {
-  e.preventDefault();
-  
-  const url = settingsApiUrl.value.trim();
-  const key = settingsApiKey.value.trim();
-  const notify = settingsReminders.checked;
-  
-  chrome.storage.local.set({
-    apiUrl: url,
-    apiKey: key,
-    remindersEnabled: notify
-  }, () => {
-    console.log("Settings saved.");
-    settingsOverlay.classList.remove("active");
-    
-    // Trigger instant refresh using new endpoint/key configurations
-    triggerForceSync();
-  });
-}
 
 // --- UTILS & INTERACTIONS ---
 function toggleFavorite(launchId) {

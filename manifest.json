@@ -1,21 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "India Space Launch Tracker",
+  "name": "ISRO Launch Tracker – India Space",
   "version": "1.0.0",
-  "description": "Track Indian space launches from ISRO and private companies with live countdowns, alerts, and notifications",
+  "description": "Track ISRO launches, Chandrayaan missions, PSLV rockets, live countdowns, satellite launches, and Indian space updates in real time.",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/space_hub_128x128.png",
+    "48": "icons/space_hub_128x128.png",
+    "128": "icons/space_hub_128x128.png"
   },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "icons/space_hub_128x128.png",
+      "48": "icons/space_hub_128x128.png",
+      "128": "icons/space_hub_128x128.png"
     },
-    "default_title": "India Space Launch Tracker"
+    "default_title": "ISRO Launch Tracker"
   },
   "background": {
     "service_worker": "background.js"
