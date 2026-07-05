@@ -1,6 +1,6 @@
-# 🛠️ Installation & Loading Guide — ISRO Launch Tracker – India Space Missions
+# 🛠️ Installation & Loading Guide — Indian Space Hub
 
-This document provides complete instructions for developers and users to load the **ISRO Launch Tracker – India Space Missions** Chrome Extension locally in Google Chrome.
+This document provides complete instructions for developers and users to load the **Indian Space Hub** Chrome Extension locally in Google Chrome.
 
 ---
 
@@ -32,7 +32,7 @@ This document provides complete instructions for developers and users to load th
 For the best experience, pin the tracker so you can see live countdown action badges:
 
 1. Click on the **Extensions puzzle piece icon** in the top-right toolbar of Chrome.
-2. Find **"ISRO Launch Tracker – India Space Missions"** in the list.
+2. Find **"Indian Space Hub"** in the list.
 3. Click the **Pin icon** 📌 next to it.
 4. The tracker icon (with a circular space gradient and rocket symbol) will now be visible in your top toolbar.
 
@@ -57,7 +57,7 @@ Once loaded, you can test all features directly:
 - A detailed overlay modal will float into view showing targets, dates, launch vehicle types, and flight overviews.
 
 ### 4. Background Sync & Console Logs
-- Go back to `chrome://extensions` and look at the ISRO Launch Tracker – India Space Missions card.
+- Go back to `chrome://extensions` and look at the Indian Space Hub card.
 - Click on the link next to **Inspect views** marked **`service worker`** (or `background page`).
 - This will open the Chrome developer inspector panel for the extension background engine.
 - Verify the recurring sync triggers (`[Background Fetch] Requesting space API`) and storage logs.

@@ -1,4 +1,4 @@
-# 🚀 How to Launch the ISRO Launch Tracker – India Space Missions
+# 🚀 How to Launch Indian Space Hub
 
 To launch and use this custom Chrome Extension on your browser, follow these simple steps:
 
@@ -22,7 +22,7 @@ To launch and use this custom Chrome Extension on your browser, follow these sim
 ## Step 4: Pin and Launch
 1. The extension is now installed! You should see its card in your Extensions list.
 2. To easily access it, click the **Puzzle piece icon** (🧩) in the top-right toolbar of Chrome.
-3. Find **ISRO Launch Tracker – India Space Missions** in the dropdown list and click the **Pin icon** (📌) next to it.
+3. Find **Indian Space Hub** in the dropdown list and click the **Pin icon** (📌) next to it.
 4. **Click the new Rocket icon** in your toolbar to launch the dashboard and view the live countdowns!
 
 ---

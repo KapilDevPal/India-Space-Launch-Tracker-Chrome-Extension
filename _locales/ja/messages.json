@@ -1,0 +1,397 @@
+{
+  "appName": {
+    "message": "インド宇宙ハブ"
+  },
+  "appDesc": {
+    "message": "ISRO打ち上げ、チャンドラヤーン・ミッション、PSLVロケット、ライブカウントダウン、人工衛星打ち上げ、インドの宇宙アップデートをリアルタイムで追跡します。"
+  },
+  "appTitle": {
+    "message": "インド宇宙ハブ"
+  },
+  "header_title": {
+    "message": "インド宇宙ハブ"
+  },
+  "syncing": {
+    "message": "同期中..."
+  },
+  "sync_time": {
+    "message": "同期: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "午前10:30"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "未同期"
+  },
+  "offline_cached": {
+    "message": "オフライン（キャッシュデータ）"
+  },
+  "tooltip_toggle_theme": {
+    "message": "テーマの切り替え"
+  },
+  "tooltip_show_favorites": {
+    "message": "お気に入りのみ表示"
+  },
+  "tooltip_settings": {
+    "message": "設定"
+  },
+  "days": {
+    "message": "日"
+  },
+  "hours": {
+    "message": "時間"
+  },
+  "minutes": {
+    "message": "分"
+  },
+  "seconds": {
+    "message": "秒"
+  },
+  "badge_tbd": {
+    "message": "📅 未定"
+  },
+  "tooltip_add_reminder": {
+    "message": "リマインダーに追加"
+  },
+  "search_placeholder": {
+    "message": "ミッション、ロケットを検索..."
+  },
+  "tab_upcoming": {
+    "message": "今後の予定"
+  },
+  "tab_completed": {
+    "message": "完了"
+  },
+  "tab_news": {
+    "message": "ニュース"
+  },
+  "tab_moon": {
+    "message": "月"
+  },
+  "section_upcoming": {
+    "message": "🚀 今後のミッション"
+  },
+  "section_completed": {
+    "message": "✅ 完了したミッション"
+  },
+  "section_news": {
+    "message": "📰 宇宙ニュース"
+  },
+  "section_moon": {
+    "message": "🌘 月齢カレンダー"
+  },
+  "moon_subtitle": {
+    "message": "任意の月の毎日の月相を表示します"
+  },
+  "month_january": {
+    "message": "1月"
+  },
+  "month_february": {
+    "message": "2月"
+  },
+  "month_march": {
+    "message": "3月"
+  },
+  "month_april": {
+    "message": "4月"
+  },
+  "month_may": {
+    "message": "5月"
+  },
+  "month_june": {
+    "message": "6月"
+  },
+  "month_july": {
+    "message": "7月"
+  },
+  "month_august": {
+    "message": "8月"
+  },
+  "month_september": {
+    "message": "9月"
+  },
+  "month_october": {
+    "message": "10月"
+  },
+  "month_november": {
+    "message": "11月"
+  },
+  "month_december": {
+    "message": "12月"
+  },
+  "btn_view": {
+    "message": "詳細"
+  },
+  "settings_title": {
+    "message": "⚙️ 設定とツール"
+  },
+  "tooltip_back_dashboard": {
+    "message": "ダッシュボードに戻る"
+  },
+  "settings_theme_title": {
+    "message": "アプリのテーマ"
+  },
+  "settings_theme_desc": {
+    "message": "ライトモードまたはダークモードを選択"
+  },
+  "theme_dark": {
+    "message": "ダーク"
+  },
+  "theme_light": {
+    "message": "ライト"
+  },
+  "settings_reminders_title": {
+    "message": "打ち上げリマインダー"
+  },
+  "settings_reminders_desc": {
+    "message": "24時間前、1時間前、および打ち上げ時に通知"
+  },
+  "promo_app_title": {
+    "message": "Indian Space Hub"
+  },
+  "promo_android_app": {
+    "message": "Androidアプリ"
+  },
+  "promo_live_updates": {
+    "message": "ライブアップデート"
+  },
+  "promo_desc": {
+    "message": "リアルタイムの宇宙打ち上げアラート、ホーム画面の打ち上げウィジェット、豪華な天文学の壁紙をスマートフォンで直接入手しましょう！"
+  },
+  "btn_download": {
+    "message": "Google Playでダウンロード"
+  },
+  "footer_powered_by": {
+    "message": "提供元"
+  },
+  "footer_api_link": {
+    "message": "VEEREXA SPACE API"
+  },
+  "footer_play_store": {
+    "message": "Play ストアアプリ"
+  },
+  "footer_github": {
+    "message": "GitHub"
+  },
+  "modal_profile_title": {
+    "message": "ミッションプロファイル"
+  },
+  "modal_label_vehicle": {
+    "message": "打ち上げ機"
+  },
+  "modal_label_agency": {
+    "message": "機関 / プロバイダー"
+  },
+  "modal_label_date": {
+    "message": "打ち上げウィンドウ"
+  },
+  "modal_label_status": {
+    "message": "ミッションステータス"
+  },
+  "modal_label_orbit": {
+    "message": "目標軌道"
+  },
+  "modal_label_payload": {
+    "message": "ペイロードと概要"
+  },
+  "modal_desc_fallback": {
+    "message": "この飛行に関する具体的な詳細なペイロード情報は提供されていません。テレメトリは正常に稼働しています。"
+  },
+  "empty_completed": {
+    "message": "完了したミッションはありません。"
+  },
+  "empty_upcoming": {
+    "message": "今後のミッションが見つかりません。"
+  },
+  "empty_adjust_filters": {
+    "message": "フィルターを調整するか、後でもう一度確認してください"
+  },
+  "news_loading": {
+    "message": "読み込み中..."
+  },
+  "news_failed": {
+    "message": "ニュースの読み込みに失敗しました。"
+  },
+  "news_check_connection": {
+    "message": "接続を確認してください"
+  },
+  "news_no_articles": {
+    "message": "ニュース記事が見つかりません。"
+  },
+  "news_read_more": {
+    "message": "詳細を読む →"
+  },
+  "date_tbd": {
+    "message": "打ち上げ日未定"
+  },
+  "window_tbd": {
+    "message": "時間帯: 未定"
+  },
+  "window_range": {
+    "message": "時間帯: $start$ - $end$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "午前10:30"
+      },
+      "end": {
+        "content": "$2",
+        "example": "午前11:30"
+      }
+    }
+  },
+  "window_single": {
+    "message": "時間帯: $start$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "午前10:30"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "新月"
+  },
+  "phase_waxing_crescent": {
+    "message": "三日月"
+  },
+  "phase_first_quarter": {
+    "message": "上弦の月"
+  },
+  "phase_waxing_gibbous": {
+    "message": "十三夜"
+  },
+  "phase_full_moon": {
+    "message": "満月"
+  },
+  "phase_waning_gibbous": {
+    "message": "寝待月"
+  },
+  "phase_third_quarter": {
+    "message": "下弦の月"
+  },
+  "phase_waning_crescent": {
+    "message": "二十六夜月"
+  },
+  "illumination_format": {
+    "message": "輝面比 $percent$%",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "月相データはありません。"
+  },
+  "status_completed": {
+    "message": "完了"
+  },
+  "status_tbd": {
+    "message": "未定"
+  },
+  "status_launched": {
+    "message": "打ち上げ完了"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 新しい宇宙ミッションが追加されました！"
+  },
+  "notify_new_launch_message": {
+    "message": "$company$の$mission$は$date$に予定されています。",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "2026/11/20"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 打ち上げ24時間前: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "$company$の$mission$ミッションは、ちょうど24時間後に打ち上げ予定です！",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ 打ち上げ1時間前: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "カウントダウン中！$company$の$mission$は1時間後に打ち上げられます。準備をしましょう！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 リフトオフ！$mission$が打ち上げられました！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "打ち上げ開始！$mission$はサティシュ・ダワン宇宙センターから直ちに打ち上げられました！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "ライブ"
+  },
+  "featured_mission": {
+    "message": "注目のミッション",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "注目",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "最近",
+    "description": "Translation for key: news_recent"
+  }
+}

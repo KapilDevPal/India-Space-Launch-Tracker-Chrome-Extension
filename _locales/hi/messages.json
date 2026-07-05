@@ -1,0 +1,397 @@
+{
+  "appName": {
+    "message": "भारतीय अंतरिक्ष केंद्र"
+  },
+  "appDesc": {
+    "message": "इसरो (ISRO) लॉन्च, चंद्रयान मिशन, पीएसएलवी (PSLV) रॉकेट, लाइव उलटी गिनती, उपग्रह प्रक्षेपण और भारतीय अंतरिक्ष अपडेट को वास्तविक समय में ट्रैक करें।"
+  },
+  "appTitle": {
+    "message": "भारतीय अंतरिक्ष केंद्र"
+  },
+  "header_title": {
+    "message": "भारतीय अंतरिक्ष केंद्र"
+  },
+  "syncing": {
+    "message": "सिंक हो रहा है..."
+  },
+  "sync_time": {
+    "message": "सिंक: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "कभी सिंक नहीं हुआ"
+  },
+  "offline_cached": {
+    "message": "ऑफ़लाइन (कैश किया गया डेटा)"
+  },
+  "tooltip_toggle_theme": {
+    "message": "थीम बदलें"
+  },
+  "tooltip_show_favorites": {
+    "message": "केवल पसंदीदा दिखाएं"
+  },
+  "tooltip_settings": {
+    "message": "सेटिंग्स"
+  },
+  "days": {
+    "message": "दिन"
+  },
+  "hours": {
+    "message": "घंटे"
+  },
+  "minutes": {
+    "message": "मिनट"
+  },
+  "seconds": {
+    "message": "सेकंड"
+  },
+  "badge_tbd": {
+    "message": "📅 तय नहीं"
+  },
+  "tooltip_add_reminder": {
+    "message": "रिमाइंडर में जोड़ें"
+  },
+  "search_placeholder": {
+    "message": "मिशन, रॉकेट खोजें..."
+  },
+  "tab_upcoming": {
+    "message": "आगामी"
+  },
+  "tab_completed": {
+    "message": "पूर्ण"
+  },
+  "tab_news": {
+    "message": "समाचार"
+  },
+  "tab_moon": {
+    "message": "चंद्रमा"
+  },
+  "section_upcoming": {
+    "message": "🚀 आगामी मिशन"
+  },
+  "section_completed": {
+    "message": "✅ पूर्ण किए गए मिशन"
+  },
+  "section_news": {
+    "message": "📰 अंतरिक्ष समाचार"
+  },
+  "section_moon": {
+    "message": "🌘 चंद्र कैलेंडर"
+  },
+  "moon_subtitle": {
+    "message": "किसी भी महीने के लिए दैनिक चंद्रमा कलाएं देखें"
+  },
+  "month_january": {
+    "message": "जनवरी"
+  },
+  "month_february": {
+    "message": "फ़रवरी"
+  },
+  "month_march": {
+    "message": "मार्च"
+  },
+  "month_april": {
+    "message": "अप्रैल"
+  },
+  "month_may": {
+    "message": "मई"
+  },
+  "month_june": {
+    "message": "जून"
+  },
+  "month_july": {
+    "message": "जुलाई"
+  },
+  "month_august": {
+    "message": "अगस्त"
+  },
+  "month_september": {
+    "message": "सितंबर"
+  },
+  "month_october": {
+    "message": "अक्टूबर"
+  },
+  "month_november": {
+    "message": "नवंबर"
+  },
+  "month_december": {
+    "message": "दिसंबर"
+  },
+  "btn_view": {
+    "message": "देखें"
+  },
+  "settings_title": {
+    "message": "⚙️ सेटिंग्स और टूल्स"
+  },
+  "tooltip_back_dashboard": {
+    "message": "डैशबोर्ड पर वापस जाएं"
+  },
+  "settings_theme_title": {
+    "message": "ऐप थीम"
+  },
+  "settings_theme_desc": {
+    "message": "लाइट या डार्क थीम में से चुनें"
+  },
+  "theme_dark": {
+    "message": "डार्क"
+  },
+  "theme_light": {
+    "message": "लाइट"
+  },
+  "settings_reminders_title": {
+    "message": "लॉन्च रिमाइंडर"
+  },
+  "settings_reminders_desc": {
+    "message": "24 घंटे, 1 घंटे पहले और लॉन्च के समय सूचित करें"
+  },
+  "promo_app_title": {
+    "message": "भारतीय अंतरिक्ष केंद्र"
+  },
+  "promo_android_app": {
+    "message": "एंड्रॉयड ऐप"
+  },
+  "promo_live_updates": {
+    "message": "लाइव अपडेट"
+  },
+  "promo_desc": {
+    "message": "अपने फोन पर रीयल-टाइम स्पेस लॉन्च अलर्ट, होम स्क्रीन लॉन्च विजेट और भव्य खगोल विज्ञान वॉलपेपर सीधे प्राप्त करें!"
+  },
+  "btn_download": {
+    "message": "गूगल प्ले स्टोर से डाउनलोड करें"
+  },
+  "footer_powered_by": {
+    "message": "द्वारा संचालित"
+  },
+  "footer_api_link": {
+    "message": "विरेक्सा स्पेस एपीआई"
+  },
+  "footer_play_store": {
+    "message": "प्ले स्टोर ऐप"
+  },
+  "footer_github": {
+    "message": "गिटहब"
+  },
+  "modal_profile_title": {
+    "message": "मिशन प्रोफ़ाइल"
+  },
+  "modal_label_vehicle": {
+    "message": "लॉन्च वाहन"
+  },
+  "modal_label_agency": {
+    "message": "एजेंसी / प्रदाता"
+  },
+  "modal_label_date": {
+    "message": "लॉन्च विंडो"
+  },
+  "modal_label_status": {
+    "message": "मिशन की स्थिति"
+  },
+  "modal_label_orbit": {
+    "message": "लक्ष्य कक्षा"
+  },
+  "modal_label_payload": {
+    "message": "पेलोड और विवरण"
+  },
+  "modal_desc_fallback": {
+    "message": "इस उड़ान के लिए कोई विशिष्ट विस्तृत पेलोड विवरण उपलब्ध नहीं हैं। टेलीमेट्री स्थिति सक्रिय है।"
+  },
+  "empty_completed": {
+    "message": "अभी तक कोई पूर्ण मिशन नहीं हैं।"
+  },
+  "empty_upcoming": {
+    "message": "कोई आगामी मिशन नहीं मिला।"
+  },
+  "empty_adjust_filters": {
+    "message": "फ़िल्टर बदलें या बाद में जांचें"
+  },
+  "news_loading": {
+    "message": "लोड हो रहा है..."
+  },
+  "news_failed": {
+    "message": "समाचार लोड करने में विफल।"
+  },
+  "news_check_connection": {
+    "message": "अपना कनेक्शन जांचें"
+  },
+  "news_no_articles": {
+    "message": "कोई समाचार लेख नहीं मिला।"
+  },
+  "news_read_more": {
+    "message": "अधिक पढ़ें →"
+  },
+  "date_tbd": {
+    "message": "तारीख तय होना बाकी है"
+  },
+  "window_tbd": {
+    "message": "विंडो: तय नहीं"
+  },
+  "window_range": {
+    "message": "विंडो: $start$ - $end$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      },
+      "end": {
+        "content": "$2",
+        "example": "11:30 AM"
+      }
+    }
+  },
+  "window_single": {
+    "message": "विंडो: $start$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "अमावस्या"
+  },
+  "phase_waxing_crescent": {
+    "message": "बाल चंद्र"
+  },
+  "phase_first_quarter": {
+    "message": "प्रथम चतुर्थांश"
+  },
+  "phase_waxing_gibbous": {
+    "message": "कुब्ज चंद्र"
+  },
+  "phase_full_moon": {
+    "message": "पूर्णिमा"
+  },
+  "phase_waning_gibbous": {
+    "message": "घटता कुब्ज चंद्र"
+  },
+  "phase_third_quarter": {
+    "message": "अंतिम चतुर्थांश"
+  },
+  "phase_waning_crescent": {
+    "message": "घटता बाल चंद्र"
+  },
+  "illumination_format": {
+    "message": "$percent$% चमकीला",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "चंद्रमा कला का कोई डेटा उपलब्ध नहीं है।"
+  },
+  "status_completed": {
+    "message": "पूर्ण"
+  },
+  "status_tbd": {
+    "message": "तय नहीं"
+  },
+  "status_launched": {
+    "message": "लॉन्च किया गया"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 नया अंतरिक्ष मिशन जोड़ा गया!"
+  },
+  "notify_new_launch_message": {
+    "message": "$company$ का $mission$ मिशन अब $date$ के लिए निर्धारित है।",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "11/20/2026"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 लॉन्च में 24 घंटे शेष: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "$company$ का $mission$ मिशन ठीक 24 घंटे में लॉन्च होने वाला है!",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ उलटी गिनती - 1 घंटा शेष: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "उलटी गिनती चल रही है! $company$ का $mission$ मिशन 1 घंटे में लॉन्च हो रहा है। तैयार हो जाएं!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 सफल प्रस्थान! $mission$ लॉन्च हो रहा है!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "उड़ान के लिए तैयार! श्रीहरिकोटा से $mission$ का प्रस्थान शुरू हो गया है!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "लाइव"
+  },
+  "featured_mission": {
+    "message": "विशेष मिशन",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "विशेष",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "हालिया",
+    "description": "Translation for key: news_recent"
+  }
+}

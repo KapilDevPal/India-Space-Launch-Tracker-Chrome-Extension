@@ -1,0 +1,476 @@
+{
+  "appName": {
+    "message": "Indian Space Hub",
+    "description": "The name of the extension."
+  },
+  "appDesc": {
+    "message": "Track ISRO launches, Chandrayaan missions, PSLV rockets, live countdowns, satellite launches, and Indian space updates in real time.",
+    "description": "The description of the extension."
+  },
+  "appTitle": {
+    "message": "Indian Space Hub",
+    "description": "Default action title for the extension popup."
+  },
+  "header_title": {
+    "message": "INDIAN SPACE HUB",
+    "description": "App header title"
+  },
+  "syncing": {
+    "message": "Syncing...",
+    "description": "Loading sync message"
+  },
+  "sync_time": {
+    "message": "Sync: $time$",
+    "description": "Sync time stamp display",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "Never Synced",
+    "description": "Text when data hasn't synced"
+  },
+  "offline_cached": {
+    "message": "Offline (Cached Data)",
+    "description": "Text when offline"
+  },
+  "tooltip_toggle_theme": {
+    "message": "Toggle Theme",
+    "description": "Tooltip for theme button"
+  },
+  "tooltip_show_favorites": {
+    "message": "Show Favorites Only",
+    "description": "Tooltip for favorites button"
+  },
+  "tooltip_settings": {
+    "message": "Settings",
+    "description": "Tooltip for settings button"
+  },
+  "days": {
+    "message": "Days",
+    "description": "Days label"
+  },
+  "hours": {
+    "message": "Hrs",
+    "description": "Hours label"
+  },
+  "minutes": {
+    "message": "Mins",
+    "description": "Minutes label"
+  },
+  "seconds": {
+    "message": "Secs",
+    "description": "Seconds label"
+  },
+  "badge_tbd": {
+    "message": "📅 TBD",
+    "description": "TBD label badge"
+  },
+  "tooltip_add_reminder": {
+    "message": "Add to reminders",
+    "description": "Tooltip for reminder/star button"
+  },
+  "search_placeholder": {
+    "message": "Search missions, rockets...",
+    "description": "Search input placeholder"
+  },
+  "tab_upcoming": {
+    "message": "Upcoming",
+    "description": "Upcoming tab label"
+  },
+  "tab_completed": {
+    "message": "Completed",
+    "description": "Completed tab label"
+  },
+  "tab_news": {
+    "message": "News",
+    "description": "News tab label"
+  },
+  "tab_moon": {
+    "message": "Moon",
+    "description": "Moon tab label"
+  },
+  "section_upcoming": {
+    "message": "🚀 Upcoming Missions",
+    "description": "Upcoming section title"
+  },
+  "section_completed": {
+    "message": "✅ Completed Missions",
+    "description": "Completed section title"
+  },
+  "section_news": {
+    "message": "📰 Space News",
+    "description": "News section title"
+  },
+  "section_moon": {
+    "message": "🌘 Moon Calendar",
+    "description": "Moon calendar title"
+  },
+  "moon_subtitle": {
+    "message": "View daily moon phases for any month",
+    "description": "Moon section subtitle"
+  },
+  "month_january": {
+    "message": "January"
+  },
+  "month_february": {
+    "message": "February"
+  },
+  "month_march": {
+    "message": "March"
+  },
+  "month_april": {
+    "message": "April"
+  },
+  "month_may": {
+    "message": "May"
+  },
+  "month_june": {
+    "message": "June"
+  },
+  "month_july": {
+    "message": "July"
+  },
+  "month_august": {
+    "message": "August"
+  },
+  "month_september": {
+    "message": "September"
+  },
+  "month_october": {
+    "message": "October"
+  },
+  "month_november": {
+    "message": "November"
+  },
+  "month_december": {
+    "message": "December"
+  },
+  "btn_view": {
+    "message": "View",
+    "description": "View button label"
+  },
+  "settings_title": {
+    "message": "⚙️ Settings & Tools",
+    "description": "Settings section title"
+  },
+  "tooltip_back_dashboard": {
+    "message": "Back to Dashboard",
+    "description": "Tooltip for settings close button"
+  },
+  "settings_theme_title": {
+    "message": "App Theme",
+    "description": "Theme setting label"
+  },
+  "settings_theme_desc": {
+    "message": "Choose between Light or Dark appearance",
+    "description": "Theme setting description"
+  },
+  "theme_dark": {
+    "message": "Dark",
+    "description": "Dark theme option text"
+  },
+  "theme_light": {
+    "message": "Light",
+    "description": "Light theme option text"
+  },
+  "settings_reminders_title": {
+    "message": "Launch Reminders",
+    "description": "Notifications setting label"
+  },
+  "settings_reminders_desc": {
+    "message": "Notify 24 hrs, 1 hr, and at liftoff time",
+    "description": "Notifications setting description"
+  },
+  "promo_app_title": {
+    "message": "Indian Space Hub",
+    "description": "Promo card app title"
+  },
+  "promo_android_app": {
+    "message": "Android App",
+    "description": "Promo card subtitle"
+  },
+  "promo_live_updates": {
+    "message": "Live Updates",
+    "description": "Promo card badge text"
+  },
+  "promo_desc": {
+    "message": "Get real-time space launch alerts, launch widgets on your home screen, and gorgeous astronomy wallpapers directly on your phone!",
+    "description": "Promo card description"
+  },
+  "btn_download": {
+    "message": "Download on Google Play",
+    "description": "Download button label"
+  },
+  "footer_powered_by": {
+    "message": "POWERED BY",
+    "description": "Powered by text in footer"
+  },
+  "footer_api_link": {
+    "message": "VEEREXA SPACE API",
+    "description": "API source name in footer"
+  },
+  "footer_play_store": {
+    "message": "Play Store App",
+    "description": "Play Store link in footer"
+  },
+  "footer_github": {
+    "message": "GitHub",
+    "description": "GitHub link in footer"
+  },
+  "modal_profile_title": {
+    "message": "Mission Profile",
+    "description": "Modal header title"
+  },
+  "modal_label_vehicle": {
+    "message": "Launch Vehicle",
+    "description": "Vehicle details label"
+  },
+  "modal_label_agency": {
+    "message": "Agency / Provider",
+    "description": "Agency details label"
+  },
+  "modal_label_date": {
+    "message": "Launch Window",
+    "description": "Date details label"
+  },
+  "modal_label_status": {
+    "message": "Mission Status",
+    "description": "Status details label"
+  },
+  "modal_label_orbit": {
+    "message": "Orbit Target",
+    "description": "Orbit details label"
+  },
+  "modal_label_payload": {
+    "message": "Payload & Overview",
+    "description": "Payload description details label"
+  },
+  "modal_desc_fallback": {
+    "message": "No specific detailed payload details are supplied for this flight. Telemetry status remains operational.",
+    "description": "Payload description fallback text"
+  },
+  "empty_completed": {
+    "message": "No completed missions yet.",
+    "description": "Empty state completed list"
+  },
+  "empty_upcoming": {
+    "message": "No upcoming missions found.",
+    "description": "Empty state upcoming list"
+  },
+  "empty_adjust_filters": {
+    "message": "Adjust filters or check back later",
+    "description": "Empty state subtext"
+  },
+  "news_loading": {
+    "message": "Loading...",
+    "description": "News loading state"
+  },
+  "news_failed": {
+    "message": "Failed to load news.",
+    "description": "News loading error"
+  },
+  "news_check_connection": {
+    "message": "Check your connection",
+    "description": "News loading error subtext"
+  },
+  "news_no_articles": {
+    "message": "No news articles found.",
+    "description": "News empty state"
+  },
+  "news_read_more": {
+    "message": "Read more →",
+    "description": "News read more link"
+  },
+  "date_tbd": {
+    "message": "Date To Be Determined",
+    "description": "Hero date TBD text"
+  },
+  "window_tbd": {
+    "message": "Window: TBD",
+    "description": "Hero window TBD text"
+  },
+  "window_range": {
+    "message": "Window: $start$ - $end$ IST",
+    "description": "Launch window range",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      },
+      "end": {
+        "content": "$2",
+        "example": "11:30 AM"
+      }
+    }
+  },
+  "window_single": {
+    "message": "Window: $start$ IST",
+    "description": "Launch window single time",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "New Moon"
+  },
+  "phase_waxing_crescent": {
+    "message": "Waxing Crescent"
+  },
+  "phase_first_quarter": {
+    "message": "First Quarter"
+  },
+  "phase_waxing_gibbous": {
+    "message": "Waxing Gibbous"
+  },
+  "phase_full_moon": {
+    "message": "Full Moon"
+  },
+  "phase_waning_gibbous": {
+    "message": "Waning Gibbous"
+  },
+  "phase_third_quarter": {
+    "message": "Third Quarter"
+  },
+  "phase_waning_crescent": {
+    "message": "Waning Crescent"
+  },
+  "illumination_format": {
+    "message": "$percent$% Illuminated",
+    "description": "Moon illumination text",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "No moon phase data available.",
+    "description": "Moon error message"
+  },
+  "status_completed": {
+    "message": "COMPLETED",
+    "description": "Status badge completed text"
+  },
+  "status_tbd": {
+    "message": "TBD",
+    "description": "Status badge TBD text"
+  },
+  "status_launched": {
+    "message": "LAUNCHED",
+    "description": "Status badge launched text"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 New Space Mission Added!",
+    "description": "Notification title for a new launch"
+  },
+  "notify_new_launch_message": {
+    "message": "$mission$ by $company$ is now scheduled for $date$.",
+    "description": "Notification message for a new launch",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "11/20/2026"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 24 Hours to Launch: $mission$",
+    "description": "24 hours to launch alert title",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "The $company$ $mission$ mission is scheduled to launch in exactly 24 hours!",
+    "description": "24 hours to launch alert message",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ T-Minus 1 Hour: $mission$",
+    "description": "1 hour to launch alert title",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "The countdown is ticking! $mission$ by $company$ is launching in 1 hour. Get ready!",
+    "description": "1 hour to launch alert message",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 LIFTOFF! $mission$ is launching!",
+    "description": "Liftoff alert title",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "Go for launch! $mission$ is scheduled for immediate liftoff from Sriharikota!",
+    "description": "Liftoff alert message",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "Live",
+    "description": "Toolbar badge live state text"
+  },
+  "featured_mission": {
+    "message": "FEATURED MISSION",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "FEATURED",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "Recent",
+    "description": "Translation for key: news_recent"
+  }
+}

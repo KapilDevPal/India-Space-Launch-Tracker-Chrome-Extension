@@ -1,0 +1,397 @@
+{
+  "appName": {
+    "message": "المركز الهندي للفضاء"
+  },
+  "appDesc": {
+    "message": "تتبع عمليات إطلاق منظمة أبحاث الفضاء الهندية (ISRO)، ومهام تشاندايان، وصواريخ PSLV، والعد التنازلي المباشر، وإطلاق الأقمار الصناعية، وتحديثات الفضاء الهندية في الوقت الفعلي."
+  },
+  "appTitle": {
+    "message": "المركز الهندي للفضاء"
+  },
+  "header_title": {
+    "message": "المركز الهندي للفضاء"
+  },
+  "syncing": {
+    "message": "جاري المزامنة..."
+  },
+  "sync_time": {
+    "message": "المزامنة: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "10:30 ص"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "لم تتم المزامنة أبداً"
+  },
+  "offline_cached": {
+    "message": "غير متصل بالإنترنت (بيانات مخزنة مؤقتاً)"
+  },
+  "tooltip_toggle_theme": {
+    "message": "تبديل المظهر"
+  },
+  "tooltip_show_favorites": {
+    "message": "عرض المفضلة فقط"
+  },
+  "tooltip_settings": {
+    "message": "الإعدادات"
+  },
+  "days": {
+    "message": "يوم"
+  },
+  "hours": {
+    "message": "ساعة"
+  },
+  "minutes": {
+    "message": "دقيقة"
+  },
+  "seconds": {
+    "message": "ثانية"
+  },
+  "badge_tbd": {
+    "message": "📅 لم يحدد بعد"
+  },
+  "tooltip_add_reminder": {
+    "message": "إضافة إلى التذكيرات"
+  },
+  "search_placeholder": {
+    "message": "البحث عن المهمات، الصواريخ..."
+  },
+  "tab_upcoming": {
+    "message": "القادمة"
+  },
+  "tab_completed": {
+    "message": "المكتملة"
+  },
+  "tab_news": {
+    "message": "الأخبار"
+  },
+  "tab_moon": {
+    "message": "القمر"
+  },
+  "section_upcoming": {
+    "message": "🚀 المهمات القادمة"
+  },
+  "section_completed": {
+    "message": "✅ المهمات المكتملة"
+  },
+  "section_news": {
+    "message": "📰 أخبار الفضاء"
+  },
+  "section_moon": {
+    "message": "🌘 تقويم القمر"
+  },
+  "moon_subtitle": {
+    "message": "عرض أطوار القمر اليومية لأي شهر"
+  },
+  "month_january": {
+    "message": "يناير"
+  },
+  "month_february": {
+    "message": "فبراير"
+  },
+  "month_march": {
+    "message": "مارس"
+  },
+  "month_april": {
+    "message": "أبريل"
+  },
+  "month_may": {
+    "message": "مايو"
+  },
+  "month_june": {
+    "message": "يونيو"
+  },
+  "month_july": {
+    "message": "يوليو"
+  },
+  "month_august": {
+    "message": "أغسطس"
+  },
+  "month_september": {
+    "message": "سبتمبر"
+  },
+  "month_october": {
+    "message": "أكتوبر"
+  },
+  "month_november": {
+    "message": "نوفمبر"
+  },
+  "month_december": {
+    "message": "ديسمبر"
+  },
+  "btn_view": {
+    "message": "عرض"
+  },
+  "settings_title": {
+    "message": "⚙️ الإعدادات والأدوات"
+  },
+  "tooltip_back_dashboard": {
+    "message": "العودة إلى اللوحة"
+  },
+  "settings_theme_title": {
+    "message": "مظهر التطبيق"
+  },
+  "settings_theme_desc": {
+    "message": "اختر بين المظهر الفاتح أو الداكن"
+  },
+  "theme_dark": {
+    "message": "داكن"
+  },
+  "theme_light": {
+    "message": "فاتح"
+  },
+  "settings_reminders_title": {
+    "message": "تذكيرات الإطلاق"
+  },
+  "settings_reminders_desc": {
+    "message": "التنبيه قبل 24 ساعة، ساعة واحدة، وعند وقت الإطلاق"
+  },
+  "promo_app_title": {
+    "message": "المركز الهندي للفضاء"
+  },
+  "promo_android_app": {
+    "message": "تطبيق أندرويد"
+  },
+  "promo_live_updates": {
+    "message": "تحديثات مباشرة"
+  },
+  "promo_desc": {
+    "message": "احصل على تنبيهات إطلاق الفضاء في الوقت الفعلي، وعناصر واجهة الإطلاق على شاشتك الرئيسية، وخلفيات علم الفلك الرائعة مباشرة على هاتفك!"
+  },
+  "btn_download": {
+    "message": "تحميل من متجر جوجل بلاي"
+  },
+  "footer_powered_by": {
+    "message": "بدعم من"
+  },
+  "footer_api_link": {
+    "message": "واجهة برمجة تطبيقات فيريكس الفضائية"
+  },
+  "footer_play_store": {
+    "message": "تطبيق متجر بلاي"
+  },
+  "footer_github": {
+    "message": "جيت هاب"
+  },
+  "modal_profile_title": {
+    "message": "ملف المهمة"
+  },
+  "modal_label_vehicle": {
+    "message": "مركبة الإطلاق"
+  },
+  "modal_label_agency": {
+    "message": "الوكالة / المزود"
+  },
+  "modal_label_date": {
+    "message": "نافذة الإطلاق"
+  },
+  "modal_label_status": {
+    "message": "حالة المهمة"
+  },
+  "modal_label_orbit": {
+    "message": "المدار المستهدف"
+  },
+  "modal_label_payload": {
+    "message": "الحمولة والنظرة العامة"
+  },
+  "modal_desc_fallback": {
+    "message": "لم يتم تقديم تفاصيل حمولة محددة لهذه الرحلة. حالة القياس عن بعد لا تزال قيد التشغيل."
+  },
+  "empty_completed": {
+    "message": "لا توجد مهمات مكتملة بعد."
+  },
+  "empty_upcoming": {
+    "message": "لم يتم العثور على مهمات قادمة."
+  },
+  "empty_adjust_filters": {
+    "message": "اضبط الفلاتر أو تحقق لاحقاً"
+  },
+  "news_loading": {
+    "message": "جاري التحميل..."
+  },
+  "news_failed": {
+    "message": "فشل تحميل الأخبار."
+  },
+  "news_check_connection": {
+    "message": "تحقق من اتصالك بالإنترنت"
+  },
+  "news_no_articles": {
+    "message": "لم يتم العثور على مقالات إخبارية."
+  },
+  "news_read_more": {
+    "message": "اقرأ المزيد ←"
+  },
+  "date_tbd": {
+    "message": "التاريخ لم يحدد بعد"
+  },
+  "window_tbd": {
+    "message": "النافذة: لم تحدد بعد"
+  },
+  "window_range": {
+    "message": "النافذة: $start$ - $end$ بتوقيت الهند",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 ص"
+      },
+      "end": {
+        "content": "$2",
+        "example": "11:30 ص"
+      }
+    }
+  },
+  "window_single": {
+    "message": "النافذة: $start$ بتوقيت الهند",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 ص"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "محاق"
+  },
+  "phase_waxing_crescent": {
+    "message": "هلال متزايد"
+  },
+  "phase_first_quarter": {
+    "message": "تربيع أول"
+  },
+  "phase_waxing_gibbous": {
+    "message": "أحدب متزايد"
+  },
+  "phase_full_moon": {
+    "message": "بدر"
+  },
+  "phase_waning_gibbous": {
+    "message": "أحدب متناقص"
+  },
+  "phase_third_quarter": {
+    "message": "تربيع ثاني"
+  },
+  "phase_waning_crescent": {
+    "message": "هلال متناقص"
+  },
+  "illumination_format": {
+    "message": "مضاء بنسبة $percent$%",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "لا توجد بيانات متاحة لأطوار القمر."
+  },
+  "status_completed": {
+    "message": "مكتملة"
+  },
+  "status_tbd": {
+    "message": "معلق"
+  },
+  "status_launched": {
+    "message": "تم الإطلاق"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 تم إضافة مهمة فضائية جديدة!"
+  },
+  "notify_new_launch_message": {
+    "message": "تم جدولة مهمة $mission$ بواسطة $company$ في تاريخ $date$.",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "2026/11/20"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 24 ساعة على الإطلاق: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "من المقرر إطلاق مهمة $company$ $mission$ بعد 24 ساعة بالضبط!",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ ساعة واحدة على الإطلاق: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "العد التنازلي مستمر! سيتم إطلاق $mission$ بواسطة $company$ خلال ساعة واحدة. استعد!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 انطلاق! جاري إطلاق $mission$!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "انطلق! تم جدولة إطلاق $mission$ فوراً من سريهاريكوتا!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "مباشر"
+  },
+  "featured_mission": {
+    "message": "مهمة مميزة",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "مميز",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "الأخيرة",
+    "description": "Translation for key: news_recent"
+  }
+}

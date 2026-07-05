@@ -1,4 +1,4 @@
-// Background service worker for ISRO Launch Tracker – India Space Missions Extension
+// Background service worker for Indian Space Hub Extension
 
 const DEFAULT_API_URL = "https://space.veerexa.com/api/space/upcoming_launches";
 const FALLBACK_API_KEY = "isro_live_7e96e0d26a773dec3256864c91f93681";
@@ -11,6 +11,7 @@ const MOCK_LAUNCHES = [
     slug: "gaganyaan-g1",
     launch_date: "2026-11-20T00:00:00.000Z",
     status: "upcoming",
+    featured: true,
     description: "First uncrewed orbital flight test of India's human spaceflight program. The mission will test the crew module's flight systems, propulsion, and re-entry operations in low Earth orbit.",
     created_at: "2026-05-10T15:12:51.639Z",
     name: "Gaganyaan G1",
@@ -61,7 +62,7 @@ const MOCK_LAUNCHES = [
 
 // Initialize extension state on installation
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("ISRO Launch Tracker – India Space Missions Extension Installed.");
+  console.log("Indian Space Hub Extension Installed.");
   
   // Set default settings and seed mock data to guarantee immediate functionality
   chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], (res) => {
@@ -102,6 +103,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: err.message });
       });
     return true; // Keep channel open for async response
+  } else if (request.action === "rescheduleAlarms") {
+    chrome.storage.local.get(["launchData", "favorites", "remindersEnabled"], (res) => {
+      const data = res.launchData || [];
+      const favs = res.favorites || [];
+      const enabled = res.remindersEnabled !== false;
+      scheduleLaunchAlertAlarms(data, favs, enabled);
+      sendResponse({ success: true });
+    });
+    return true;
   }
 });
 
@@ -153,11 +163,13 @@ async function fetchLaunchData() {
               mission_name: attr.mission_name || attr.name,
               slug: attr.slug,
               launch_date: attr.launch_date,
+              launch_date_end: attr.launch_date_end,
               status: attr.status || "upcoming",
               description: attr.description || "",
               company_name: attr.company_name || "ISRO",
               company_logo_url: attr.company_logo_url || "",
-              image_url: attr.image_url || ""
+              image_url: attr.image_url || "",
+              featured: attr.featured || false
             };
           });
         } else {
@@ -198,17 +210,18 @@ function checkForNewLaunches(oldList, newList) {
   const newlyAdded = newList.filter(l => !oldIds.has(String(l.id)));
   
   newlyAdded.forEach(launch => {
+    const formattedDate = new Date(launch.launch_date).toLocaleDateString();
     chrome.notifications.create(`new_launch_${launch.id}`, {
       type: "basic",
-      iconUrl: "icons/icon128.png",
-      title: "🚀 New Space Mission Added!",
-      message: `${launch.mission_name} by ${launch.company_name || 'ISRO'} is now scheduled for ${new Date(launch.launch_date).toLocaleDateString()}.`,
+      iconUrl: "icons/chopper_icon.png",
+      title: chrome.i18n.getMessage("notify_new_launch_title"),
+      message: chrome.i18n.getMessage("notify_new_launch_message", [launch.mission_name, launch.company_name || 'ISRO', formattedDate]),
       priority: 2
     });
   });
 }
 
-// Update Extension Action Toolbar Badge with countdown to immediate launch
+// Update Extension Action Toolbar Badge with countdown to featured launch (or next launch)
 function updateBadge(launches) {
   if (!launches || launches.length === 0) {
     chrome.action.setBadgeText({ text: "" });
@@ -218,7 +231,7 @@ function updateBadge(launches) {
   // Filter for valid future launches
   const now = new Date();
   const futureLaunches = launches
-    .filter(l => new Date(l.launch_date) > now)
+    .filter(l => new Date(l.launch_date) > now || (l.status || "").toLowerCase() === "tbd")
     .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
     
   if (futureLaunches.length === 0) {
@@ -226,19 +239,41 @@ function updateBadge(launches) {
     return;
   }
   
-  const nextLaunch = futureLaunches[0];
+  // Select featured launch if present in future launches; fallback to first non-TBD, then first TBD
+  const featuredLaunch = futureLaunches.find(l => l.featured === true);
+  const nextNonTBD = futureLaunches.find(l => (l.status || "").toLowerCase() !== "tbd");
+  const nextTBD = futureLaunches.find(l => (l.status || "").toLowerCase() === "tbd");
+  const nextLaunch = featuredLaunch || nextNonTBD || nextTBD || futureLaunches[0];
+  
+  const isTBD = (nextLaunch.status || "").toLowerCase() === "tbd";
+  if (isTBD) {
+    chrome.action.setBadgeText({ text: "TBD" });
+    chrome.action.setBadgeBackgroundColor({ color: "#f59e0b" }); // Gold/Yellow for TBD
+    return;
+  }
+  
   const diffTime = new Date(nextLaunch.launch_date) - now;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (diffTime <= 0) {
+    chrome.action.setBadgeText({ text: chrome.i18n.getMessage("badge_live") || "Live" });
+    chrome.action.setBadgeBackgroundColor({ color: "#10b981" }); // Emerald Green for Live
+    return;
+  }
+  
+  const d = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const m = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
   
   let badgeText = "";
-  if (diffDays <= 0) {
-    badgeText = "Live";
+  if (d > 0) {
+    badgeText = `${d}d`;
+  } else if (h > 0) {
+    badgeText = `${h}h`;
   } else {
-    badgeText = `${diffDays}D`;
+    badgeText = `${m}m`;
   }
   
   chrome.action.setBadgeText({ text: badgeText });
-  chrome.action.setBadgeBackgroundColor({ color: "#0058be" }); // Slate Blue / Cyan glow base
+  chrome.action.setBadgeBackgroundColor({ color: "#0088ff" }); // Vibrant blue
 }
 
 // Schedule localized notification alarms for launches
@@ -298,21 +333,22 @@ function handleNotificationAlarm(alarmName) {
     
     let title = "";
     let message = "";
+    const company = launch.company_name || 'ISRO';
     
     if (alertType === "24h") {
-      title = `🚀 24 Hours to Launch: ${launch.mission_name}`;
-      message = `The ${launch.company_name || 'ISRO'} ${launch.mission_name} mission is scheduled to launch in exactly 24 hours!`;
+      title = chrome.i18n.getMessage("notify_24h_title", [launch.mission_name]);
+      message = chrome.i18n.getMessage("notify_24h_message", [company, launch.mission_name]);
     } else if (alertType === "1h") {
-      title = `⏰ T-Minus 1 Hour: ${launch.mission_name}`;
-      message = `The countdown is ticking! ${launch.mission_name} by ${launch.company_name || 'ISRO'} is launching in 1 hour. Get ready!`;
+      title = chrome.i18n.getMessage("notify_1h_title", [launch.mission_name]);
+      message = chrome.i18n.getMessage("notify_1h_message", [launch.mission_name, company]);
     } else if (alertType === "now") {
-      title = `🔥 LIFTOFF! ${launch.mission_name} is launching!`;
-      message = `Go for launch! ${launch.mission_name} is scheduled for immediate liftoff from Sriharikota!`;
+      title = chrome.i18n.getMessage("notify_now_title", [launch.mission_name]);
+      message = chrome.i18n.getMessage("notify_now_message", [launch.mission_name]);
     }
     
     chrome.notifications.create(`launch_alert_${alertType}_${launchId}`, {
       type: "basic",
-      iconUrl: "icons/icon128.png",
+      iconUrl: "icons/chopper_icon.png",
       title: title,
       message: message,
       priority: 2,

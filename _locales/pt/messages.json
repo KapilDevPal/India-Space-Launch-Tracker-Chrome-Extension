@@ -1,0 +1,397 @@
+{
+  "appName": {
+    "message": "Centro Espacial Indiano"
+  },
+  "appDesc": {
+    "message": "Acompanhe os lançamentos da ISRO, missões Chandrayaan, foguetes PSLV, contagens regressivas ao vivo, lançamentos de satélites e atualizações espaciais indianas em tempo real."
+  },
+  "appTitle": {
+    "message": "Centro Espacial Indiano"
+  },
+  "header_title": {
+    "message": "CENTRO ESPACIAL INDIANO"
+  },
+  "syncing": {
+    "message": "Sincronizando..."
+  },
+  "sync_time": {
+    "message": "Sincronizado: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "Nunca sincronizado"
+  },
+  "offline_cached": {
+    "message": "Desconectado (Dados em cache)"
+  },
+  "tooltip_toggle_theme": {
+    "message": "Alternar Tema"
+  },
+  "tooltip_show_favorites": {
+    "message": "Mostrar Apenas Favoritos"
+  },
+  "tooltip_settings": {
+    "message": "Configurações"
+  },
+  "days": {
+    "message": "Dias"
+  },
+  "hours": {
+    "message": "Hrs"
+  },
+  "minutes": {
+    "message": "Mins"
+  },
+  "seconds": {
+    "message": "Segs"
+  },
+  "badge_tbd": {
+    "message": "📅 A definir"
+  },
+  "tooltip_add_reminder": {
+    "message": "Adicionar aos lembretes"
+  },
+  "search_placeholder": {
+    "message": "Buscar missões, foguetes..."
+  },
+  "tab_upcoming": {
+    "message": "Próximos"
+  },
+  "tab_completed": {
+    "message": "Concluídos"
+  },
+  "tab_news": {
+    "message": "Notícias"
+  },
+  "tab_moon": {
+    "message": "Lua"
+  },
+  "section_upcoming": {
+    "message": "🚀 Próximas Missões"
+  },
+  "section_completed": {
+    "message": "✅ Missões Concluídas"
+  },
+  "section_news": {
+    "message": "📰 Notícias Espaciais"
+  },
+  "section_moon": {
+    "message": "🌘 Calendário Lunar"
+  },
+  "moon_subtitle": {
+    "message": "Ver fases da lua diárias de qualquer mês"
+  },
+  "month_january": {
+    "message": "Janeiro"
+  },
+  "month_february": {
+    "message": "Fevereiro"
+  },
+  "month_march": {
+    "message": "Março"
+  },
+  "month_april": {
+    "message": "Abril"
+  },
+  "month_may": {
+    "message": "Maio"
+  },
+  "month_june": {
+    "message": "Junho"
+  },
+  "month_july": {
+    "message": "Julho"
+  },
+  "month_august": {
+    "message": "Agosto"
+  },
+  "month_september": {
+    "message": "Setembro"
+  },
+  "month_october": {
+    "message": "Outubro"
+  },
+  "month_november": {
+    "message": "Novembro"
+  },
+  "month_december": {
+    "message": "Dezembro"
+  },
+  "btn_view": {
+    "message": "Ver"
+  },
+  "settings_title": {
+    "message": "⚙️ Configurações e Ferramentas"
+  },
+  "tooltip_back_dashboard": {
+    "message": "Voltar ao Painel"
+  },
+  "settings_theme_title": {
+    "message": "Tema do App"
+  },
+  "settings_theme_desc": {
+    "message": "Escolha entre aparência Clara ou Escura"
+  },
+  "theme_dark": {
+    "message": "Escuro"
+  },
+  "theme_light": {
+    "message": "Claro"
+  },
+  "settings_reminders_title": {
+    "message": "Lembretes de Lançamento"
+  },
+  "settings_reminders_desc": {
+    "message": "Notificar 24 horas, 1 hora antes e no momento do lançamento"
+  },
+  "promo_app_title": {
+    "message": "Indian Space Hub"
+  },
+  "promo_android_app": {
+    "message": "App Android"
+  },
+  "promo_live_updates": {
+    "message": "Atualizações ao Vivo"
+  },
+  "promo_desc": {
+    "message": "Receba alertas de lançamento espacial em tempo real, widgets de lançamento na tela inicial e lindos papéis de parede de astronomia diretamente no seu celular!"
+  },
+  "btn_download": {
+    "message": "Baixar no Google Play"
+  },
+  "footer_powered_by": {
+    "message": "DESENVOLVIDO POR"
+  },
+  "footer_api_link": {
+    "message": "VEEREXA SPACE API"
+  },
+  "footer_play_store": {
+    "message": "App da Play Store"
+  },
+  "footer_github": {
+    "message": "GitHub"
+  },
+  "modal_profile_title": {
+    "message": "Perfil da Missão"
+  },
+  "modal_label_vehicle": {
+    "message": "Veículo de Lançamento"
+  },
+  "modal_label_agency": {
+    "message": "Agência / Provedor"
+  },
+  "modal_label_date": {
+    "message": "Janela de Lançamento"
+  },
+  "modal_label_status": {
+    "message": "Status da Missão"
+  },
+  "modal_label_orbit": {
+    "message": "Órbita Alvo"
+  },
+  "modal_label_payload": {
+    "message": "Carga Útil e Visão Geral"
+  },
+  "modal_desc_fallback": {
+    "message": "Não foram fornecidos detalhes específicos da carga útil para este voo. O status da telemetria continua operacional."
+  },
+  "empty_completed": {
+    "message": "Nenhuma missão concluída ainda."
+  },
+  "empty_upcoming": {
+    "message": "Nenhuma missão futura encontrada."
+  },
+  "empty_adjust_filters": {
+    "message": "Ajuste os filtros ou volte mais tarde"
+  },
+  "news_loading": {
+    "message": "Carregando..."
+  },
+  "news_failed": {
+    "message": "Falha ao carregar notícias."
+  },
+  "news_check_connection": {
+    "message": "Verifique sua conexão"
+  },
+  "news_no_articles": {
+    "message": "Nenhum artigo de notícias encontrado."
+  },
+  "news_read_more": {
+    "message": "Leia mais →"
+  },
+  "date_tbd": {
+    "message": "Data a ser determinada"
+  },
+  "window_tbd": {
+    "message": "Janela: A definir"
+  },
+  "window_range": {
+    "message": "Janela: $start$ - $end$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      },
+      "end": {
+        "content": "$2",
+        "example": "11:30 AM"
+      }
+    }
+  },
+  "window_single": {
+    "message": "Janela: $start$ IST",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "10:30 AM"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "Lua Nova"
+  },
+  "phase_waxing_crescent": {
+    "message": "Lua Crescente"
+  },
+  "phase_first_quarter": {
+    "message": "Quarto Crescente"
+  },
+  "phase_waxing_gibbous": {
+    "message": "Lua Gibosa Crescente"
+  },
+  "phase_full_moon": {
+    "message": "Lua Cheia"
+  },
+  "phase_waning_gibbous": {
+    "message": "Lua Gibosa Minguante"
+  },
+  "phase_third_quarter": {
+    "message": "Quarto Minguante"
+  },
+  "phase_waning_crescent": {
+    "message": "Lua Minguante"
+  },
+  "illumination_format": {
+    "message": "$percent$% Iluminada",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "Dados de fases da lua não disponíveis."
+  },
+  "status_completed": {
+    "message": "CONCLUÍDO"
+  },
+  "status_tbd": {
+    "message": "TBD"
+  },
+  "status_launched": {
+    "message": "LANÇADO"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 Nova missão espacial adicionada!"
+  },
+  "notify_new_launch_message": {
+    "message": "$mission$ da $company$ está agora programada para $date$.",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "2026-11-20"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 24 Horas para o Lançamento: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "A missão $mission$ da $company$ está agendada para decolar em exatamente 24 horas!",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ T-Menos 1 Hora: $mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "A contagem regressiva está correndo! $mission$ da $company$ decola em 1 hora. Prepare-se!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 DECOLAGEM! $mission$ está subindo!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "Autorizado para o lançamento! $mission$ decola imediatamente de Sriharikota!",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "Ao Vivo"
+  },
+  "featured_mission": {
+    "message": "MISSÃO EM DESTAQUE",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "DESTAQUE",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "Recente",
+    "description": "Translation for key: news_recent"
+  }
+}

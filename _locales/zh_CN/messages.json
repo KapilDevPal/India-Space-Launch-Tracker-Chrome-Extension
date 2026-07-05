@@ -1,0 +1,397 @@
+{
+  "appName": {
+    "message": "印度太空中心"
+  },
+  "appDesc": {
+    "message": "实时追踪印度空间研究组织（ISRO）的发射、月船任务、PSLV运载火箭、现场倒计时、卫星发射以及印度太空港的最新动态。"
+  },
+  "appTitle": {
+    "message": "印度太空中心"
+  },
+  "header_title": {
+    "message": "印度太空中心"
+  },
+  "syncing": {
+    "message": "同步中..."
+  },
+  "sync_time": {
+    "message": "已同步: $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "上午10:30"
+      }
+    }
+  },
+  "never_synced": {
+    "message": "从未同步"
+  },
+  "offline_cached": {
+    "message": "离线 (缓存数据)"
+  },
+  "tooltip_toggle_theme": {
+    "message": "切换主题"
+  },
+  "tooltip_show_favorites": {
+    "message": "仅显示收藏"
+  },
+  "tooltip_settings": {
+    "message": "设置"
+  },
+  "days": {
+    "message": "天"
+  },
+  "hours": {
+    "message": "小时"
+  },
+  "minutes": {
+    "message": "分"
+  },
+  "seconds": {
+    "message": "秒"
+  },
+  "badge_tbd": {
+    "message": "📅 待定"
+  },
+  "tooltip_add_reminder": {
+    "message": "添加到提醒"
+  },
+  "search_placeholder": {
+    "message": "搜索任务、火箭..."
+  },
+  "tab_upcoming": {
+    "message": "即将发射"
+  },
+  "tab_completed": {
+    "message": "已完成"
+  },
+  "tab_news": {
+    "message": "新闻"
+  },
+  "tab_moon": {
+    "message": "月相"
+  },
+  "section_upcoming": {
+    "message": "🚀 即将发射的任务"
+  },
+  "section_completed": {
+    "message": "✅ 已完成的任务"
+  },
+  "section_news": {
+    "message": "📰 航天新闻"
+  },
+  "section_moon": {
+    "message": "🌘 月历"
+  },
+  "moon_subtitle": {
+    "message": "查看任何月份的每日月相"
+  },
+  "month_january": {
+    "message": "一月"
+  },
+  "month_february": {
+    "message": "二月"
+  },
+  "month_march": {
+    "message": "三月"
+  },
+  "month_april": {
+    "message": "四月"
+  },
+  "month_may": {
+    "message": "五月"
+  },
+  "month_june": {
+    "message": "六月"
+  },
+  "month_july": {
+    "message": "七月"
+  },
+  "month_august": {
+    "message": "八月"
+  },
+  "month_september": {
+    "message": "九月"
+  },
+  "month_october": {
+    "message": "十月"
+  },
+  "month_november": {
+    "message": "十一月"
+  },
+  "month_december": {
+    "message": "十二月"
+  },
+  "btn_view": {
+    "message": "查看"
+  },
+  "settings_title": {
+    "message": "⚙️ 设置与工具"
+  },
+  "tooltip_back_dashboard": {
+    "message": "返回仪表盘"
+  },
+  "settings_theme_title": {
+    "message": "应用主题"
+  },
+  "settings_theme_desc": {
+    "message": "选择浅色或深色外观"
+  },
+  "theme_dark": {
+    "message": "深色"
+  },
+  "theme_light": {
+    "message": "浅色"
+  },
+  "settings_reminders_title": {
+    "message": "发射提醒"
+  },
+  "settings_reminders_desc": {
+    "message": "提前24小时、1小时以及在起飞时通知"
+  },
+  "promo_app_title": {
+    "message": "Indian Space Hub"
+  },
+  "promo_android_app": {
+    "message": "Android 应用"
+  },
+  "promo_live_updates": {
+    "message": "现场更新"
+  },
+  "promo_desc": {
+    "message": "直接在手机上获取实时航天发射警报、主屏幕发射小部件和精美天文壁纸！"
+  },
+  "btn_download": {
+    "message": "在 Google Play 下载"
+  },
+  "footer_powered_by": {
+    "message": "技术支持"
+  },
+  "footer_api_link": {
+    "message": "VEEREXA SPACE API"
+  },
+  "footer_play_store": {
+    "message": "Play 商店应用"
+  },
+  "footer_github": {
+    "message": "GitHub"
+  },
+  "modal_profile_title": {
+    "message": "任务详情"
+  },
+  "modal_label_vehicle": {
+    "message": "运载火箭"
+  },
+  "modal_label_agency": {
+    "message": "机构 / 供应商"
+  },
+  "modal_label_date": {
+    "message": "发射窗口"
+  },
+  "modal_label_status": {
+    "message": "任务状态"
+  },
+  "modal_label_orbit": {
+    "message": "目标轨道"
+  },
+  "modal_label_payload": {
+    "message": "有效载荷与概述"
+  },
+  "modal_desc_fallback": {
+    "message": "未提供本次飞行的具体有效载荷细节。遥测状态保持正常。"
+  },
+  "empty_completed": {
+    "message": "暂无已完成的任务。"
+  },
+  "empty_upcoming": {
+    "message": "未找到即将发射的任务。"
+  },
+  "empty_adjust_filters": {
+    "message": "调整过滤器或稍后再试"
+  },
+  "news_loading": {
+    "message": "加载中..."
+  },
+  "news_failed": {
+    "message": "加载新闻失败。"
+  },
+  "news_check_connection": {
+    "message": "请检查您的网络连接"
+  },
+  "news_no_articles": {
+    "message": "未找到相关新闻。"
+  },
+  "news_read_more": {
+    "message": "阅读更多 →"
+  },
+  "date_tbd": {
+    "message": "日期有待确定"
+  },
+  "window_tbd": {
+    "message": "发射窗口: 待定"
+  },
+  "window_range": {
+    "message": "发射窗口: 印度标准时间 $start$ - $end$",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "上午10:30"
+      },
+      "end": {
+        "content": "$2",
+        "example": "上午11:30"
+      }
+    }
+  },
+  "window_single": {
+    "message": "发射窗口: 印度标准时间 $start$",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "上午10:30"
+      }
+    }
+  },
+  "phase_new_moon": {
+    "message": "新月"
+  },
+  "phase_waxing_crescent": {
+    "message": "娥眉月"
+  },
+  "phase_first_quarter": {
+    "message": "上弦月"
+  },
+  "phase_waxing_gibbous": {
+    "message": "盈凸月"
+  },
+  "phase_full_moon": {
+    "message": "满月"
+  },
+  "phase_waning_gibbous": {
+    "message": "亏凸月"
+  },
+  "phase_third_quarter": {
+    "message": "下弦月"
+  },
+  "phase_waning_crescent": {
+    "message": "残月"
+  },
+  "illumination_format": {
+    "message": "$percent$% 照度",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "50"
+      }
+    }
+  },
+  "moon_no_data": {
+    "message": "暂无月相数据。"
+  },
+  "status_completed": {
+    "message": "已完成"
+  },
+  "status_tbd": {
+    "message": "待定"
+  },
+  "status_launched": {
+    "message": "已发射"
+  },
+  "notify_new_launch_title": {
+    "message": "🚀 添加了新的太空任务！"
+  },
+  "notify_new_launch_message": {
+    "message": "$company$ 的 $mission$ 任务现在计划于 $date$ 发射。",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      },
+      "date": {
+        "content": "$3",
+        "example": "2026年11月20日"
+      }
+    }
+  },
+  "notify_24h_title": {
+    "message": "🚀 发射倒计时 24 小时：$mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_24h_message": {
+    "message": "$company$ 的 $mission$ 任务计划在整整 24 小时后发射！",
+    "placeholders": {
+      "company": {
+        "content": "$1",
+        "example": "ISRO"
+      },
+      "mission": {
+        "content": "$2",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_title": {
+    "message": "⏰ 发射倒计时 1 小时：$mission$",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_1h_message": {
+    "message": "倒计时进行中！$company$ 的 $mission$ 任务将在 1 小时后发射。做好准备！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      },
+      "company": {
+        "content": "$2",
+        "example": "ISRO"
+      }
+    }
+  },
+  "notify_now_title": {
+    "message": "🔥 起飞！$mission$ 正在发射！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "notify_now_message": {
+    "message": "发射程序启动！$mission$ 计划立即从萨蒂什·达万航天中心起飞！",
+    "placeholders": {
+      "mission": {
+        "content": "$1",
+        "example": "Gaganyaan G1"
+      }
+    }
+  },
+  "badge_live": {
+    "message": "直播中"
+  },
+  "featured_mission": {
+    "message": "特色任务",
+    "description": "Overlay label for a highlighted or featured space mission"
+  },
+  "featured": {
+    "message": "特色",
+    "description": "Translation for key: featured"
+  },
+  "news_recent": {
+    "message": "最近",
+    "description": "Translation for key: news_recent"
+  }
+}
