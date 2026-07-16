@@ -404,16 +404,29 @@ function handleNotificationAlarm(alarmName) {
   });
 }
 
-// Helper to guarantee a notification is shown only once
+// Helper to guarantee a notification is shown only once and at most once per 24 hours
 function showNotificationOnce(notificationId, options) {
-  chrome.storage.local.get(["sentNotifications"], (res) => {
+  chrome.storage.local.get(["sentNotifications", "lastNotificationTime"], (res) => {
     const sent = res.sentNotifications || [];
     if (sent.includes(notificationId)) {
       console.log(`Notification ${notificationId} has already been shown. Skipping.`);
       return;
     }
+    
+    const now = Date.now();
+    const lastTime = res.lastNotificationTime || 0;
+    const dayInMs = 24 * 60 * 60 * 1000;
+    
+    if (now - lastTime < dayInMs) {
+      console.log(`Notification throttled. Last notification was shown less than 24 hours ago. ID: ${notificationId}`);
+      return;
+    }
+    
     sent.push(notificationId);
-    chrome.storage.local.set({ sentNotifications: sent }, () => {
+    chrome.storage.local.set({ 
+      sentNotifications: sent,
+      lastNotificationTime: now
+    }, () => {
       chrome.notifications.create(notificationId, options);
     });
   });
