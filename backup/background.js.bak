@@ -57,34 +57,6 @@ const MOCK_LAUNCHES = [
     company_name: "Pixxel",
     company_logo_url: "",
     image_url: ""
-  },
-  {
-    id: 101,
-    mission_name: "Chandrayaan-3",
-    slug: "chandrayaan-3",
-    launch_date: "2023-07-14T09:05:00.000Z",
-    launch_date_end: "2023-08-23T12:34:00.000Z",
-    status: "success",
-    description: "India's third lunar exploration mission, which successfully demonstrated safe landing and roving capabilities on the Moon's south polar region.",
-    created_at: "2023-07-14T00:00:00.000Z",
-    name: "Chandrayaan-3",
-    company_name: "ISRO",
-    company_logo_url: "",
-    image_url: ""
-  },
-  {
-    id: 102,
-    mission_name: "Aditya-L1",
-    slug: "aditya-l1",
-    launch_date: "2023-09-02T06:20:00.000Z",
-    launch_date_end: "2024-01-06T10:30:00.000Z",
-    status: "success",
-    description: "India's first dedicated solar observatory mission, placed in a halo orbit around the Lagrange point 1 (L1) of the Sun-Earth system to study the solar corona and solar wind.",
-    created_at: "2023-09-02T00:00:00.000Z",
-    name: "Aditya-L1",
-    company_name: "ISRO",
-    company_logo_url: "",
-    image_url: ""
   }
 ];
 
@@ -93,14 +65,13 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log("Indian Space Hub Extension Installed.");
   
   // Set default settings and seed mock data to guarantee immediate functionality
-  chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites", "sentNotifications"], (res) => {
+  chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], (res) => {
     const updates = {};
     if (!res.apiUrl) updates.apiUrl = DEFAULT_API_URL;
     if (!res.apiKey) updates.apiKey = FALLBACK_API_KEY;
     if (!res.launchData) updates.launchData = MOCK_LAUNCHES;
     if (res.remindersEnabled === undefined) updates.remindersEnabled = true;
     if (!res.favorites) updates.favorites = [];
-    if (!res.sentNotifications) updates.sentNotifications = [];
     
     chrome.storage.local.set(updates, () => {
       console.log("Storage seeded successfully.");
@@ -144,21 +115,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Setup background sync alarm daily at 12 noon
+// Setup 5-minute background sync alarm
 function scheduleSyncAlarm() {
   chrome.alarms.clear("sync_data", () => {
-    const now = new Date();
-    const target = new Date();
-    target.setHours(12, 0, 0, 0);
-    // If 12 noon has already passed today, schedule for 12 noon tomorrow
-    if (target.getTime() <= now.getTime()) {
-      target.setDate(target.getDate() + 1);
-    }
-    chrome.alarms.create("sync_data", {
-      when: target.getTime(),
-      periodInMinutes: 24 * 60 // 1 day
-    });
-    console.log("Sync alarm configured to run daily at 12 noon. Next run:", target.toString());
+    // Alarms in extensions are subject to background process constraints.
+    // In developer mode, alarms trigger at 1 minute minimum intervals, and 5 minutes in production.
+    chrome.alarms.create("sync_data", { periodInMinutes: 5 });
+    console.log("Sync alarm configured for 5 minutes.");
   });
 }
 
@@ -217,25 +180,17 @@ async function fetchLaunchData() {
           console.warn("No upcoming launches found in API response.");
         }
         
-        // Save to storage, merging to keep past (completed) launches that are no longer in the upcoming list
+        // Save to storage
         const oldLaunches = res.launchData || [];
-        const rawIds = new Set(rawLaunches.map(l => String(l.id)));
-        const mergedLaunches = [...rawLaunches];
-        oldLaunches.forEach(oldL => {
-          if (!rawIds.has(String(oldL.id))) {
-            mergedLaunches.push(oldL);
-          }
-        });
-
         chrome.storage.local.set({
-          launchData: mergedLaunches,
+          launchData: rawLaunches,
           lastSyncTime: new Date().toISOString()
         }, () => {
-          console.log(`Synced ${rawLaunches.length} upcoming launches. Total stored: ${mergedLaunches.length}`);
+          console.log(`Synced ${rawLaunches.length} upcoming launches.`);
           checkForNewLaunches(oldLaunches, rawLaunches);
-          updateBadge(mergedLaunches);
-          scheduleLaunchAlertAlarms(mergedLaunches, res.favorites || [], res.remindersEnabled);
-          resolve(mergedLaunches);
+          updateBadge(rawLaunches);
+          scheduleLaunchAlertAlarms(rawLaunches, res.favorites || [], res.remindersEnabled);
+          resolve(rawLaunches);
         });
         
       } catch (err) {
@@ -251,15 +206,12 @@ async function fetchLaunchData() {
 
 // Detect and notify if new space launches are added to the roster
 function checkForNewLaunches(oldList, newList) {
-  // Prevent flood of notifications on first install or when cache is empty
-  if (!oldList || oldList.length === 0) return;
-  
   const oldIds = new Set(oldList.map(l => String(l.id)));
   const newlyAdded = newList.filter(l => !oldIds.has(String(l.id)));
   
   newlyAdded.forEach(launch => {
     const formattedDate = new Date(launch.launch_date).toLocaleDateString();
-    showNotificationOnce(`new_launch_${launch.id}`, {
+    chrome.notifications.create(`new_launch_${launch.id}`, {
       type: "basic",
       iconUrl: "icons/chopper_icon.png",
       title: chrome.i18n.getMessage("notify_new_launch_title"),
@@ -279,7 +231,7 @@ function updateBadge(launches) {
   // Filter for valid future launches
   const now = new Date();
   const futureLaunches = launches
-    .filter(l => new Date(l.launch_date_end || l.launch_date) > now || (l.status || "").toLowerCase() === "tbd")
+    .filter(l => new Date(l.launch_date) > now || (l.status || "").toLowerCase() === "tbd")
     .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
     
   if (futureLaunches.length === 0) {
@@ -300,7 +252,7 @@ function updateBadge(launches) {
     return;
   }
   
-  const diffTime = new Date(nextLaunch.launch_date_end || nextLaunch.launch_date) - now;
+  const diffTime = new Date(nextLaunch.launch_date) - now;
   if (diffTime <= 0) {
     chrome.action.setBadgeText({ text: chrome.i18n.getMessage("badge_live") || "Live" });
     chrome.action.setBadgeBackgroundColor({ color: "#10b981" }); // Emerald Green for Live
@@ -338,11 +290,12 @@ function scheduleLaunchAlertAlarms(launches, favorites, globalRemindersEnabled) 
     const favSet = new Set(favorites.map(id => String(id)));
     
     launches.forEach(launch => {
-      const launchTime = new Date(launch.launch_date_end || launch.launch_date).getTime();
+      const launchTime = new Date(launch.launch_date).getTime();
       const isFavorited = favSet.has(String(launch.id));
       
-      // Limit countdown notifications to favorited launches only
-      if (!isFavorited) return;
+      // We only alert for favorited missions or all missions?
+      // Alerting for all space missions is awesome, but we can prioritize favorites or send standard alerts.
+      // Let's schedule alarms for all upcoming missions if in future.
       
       // 24 Hours Alert
       const time24h = launchTime - (24 * 60 * 60 * 1000);
@@ -393,28 +346,13 @@ function handleNotificationAlarm(alarmName) {
       message = chrome.i18n.getMessage("notify_now_message", [launch.mission_name]);
     }
     
-    showNotificationOnce(`launch_alert_${alertType}_${launchId}`, {
+    chrome.notifications.create(`launch_alert_${alertType}_${launchId}`, {
       type: "basic",
       iconUrl: "icons/chopper_icon.png",
       title: title,
       message: message,
       priority: 2,
       requireInteraction: alertType === "now" // Require user dismissal for actual launch
-    });
-  });
-}
-
-// Helper to guarantee a notification is shown only once
-function showNotificationOnce(notificationId, options) {
-  chrome.storage.local.get(["sentNotifications"], (res) => {
-    const sent = res.sentNotifications || [];
-    if (sent.includes(notificationId)) {
-      console.log(`Notification ${notificationId} has already been shown. Skipping.`);
-      return;
-    }
-    sent.push(notificationId);
-    chrome.storage.local.set({ sentNotifications: sent }, () => {
-      chrome.notifications.create(notificationId, options);
     });
   });
 }

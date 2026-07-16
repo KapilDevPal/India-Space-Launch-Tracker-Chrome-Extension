@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "__MSG_appName__",
-  "version": "1.0.6",
+  "name": "ISRO launches & news unofficial",
+  "version": "2.0.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "icons": {
@@ -16,7 +16,7 @@
       "48": "icons/chopper_icon.png",
       "128": "icons/chopper_icon.png"
     },
-    "default_title": "__MSG_appTitle__"
+    "default_title": "ISRO launches & news unofficial"
   },
   "background": {
     "service_worker": "background.js"
@@ -27,6 +27,7 @@
     "notifications"
   ],
   "host_permissions": [
-    "https://space.veerexa.com/*"
+    "https://space.veerexa.com/*",
+    "https://api.spaceflightnewsapi.net/*"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Indian Space Hub",
+    "message": "ISRO launches & news unofficial",
     "description": "The name of the extension."
   },
   "appDesc": {
@@ -8,8 +8,16 @@
     "description": "The description of the extension."
   },
   "appTitle": {
-    "message": "Indian Space Hub",
+    "message": "ISRO launches & news unofficial",
     "description": "Default action title for the extension popup."
+  },
+  "btn_back": {
+    "message": "Back",
+    "description": "Back button text"
+  },
+  "modal_btn_source": {
+    "message": "View Mission Details on Web",
+    "description": "Details web link button text"
   },
   "header_title": {
     "message": "INDIAN SPACE HUB",

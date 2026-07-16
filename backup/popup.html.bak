@@ -9,96 +9,81 @@
 <body>
 
   <!-- --- HEADER --- -->
-  <div class="topbar">
-    <div class="brand">
-      <div class="mark" id="headerRocket">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-          <path d="M12 2 L15 9 L12 22 L9 9 Z" fill="#2f7dff"/>
-          <circle cx="12" cy="8" r="2" fill="#ff9f1c"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <div class="word" data-i18n="header_title">INDIAN SPACE <span class="hub">HUB</span></div>
-        <div class="sync">
+  <header class="header">
+    <div class="logo-container">
+      <img src="icons/chopper_icon.png" id="headerRocket" class="logo-rocket" alt="Indian Space Hub Logo" style="width: 28px; height: 28px; border-radius: 50%;">
+      <div>
+        <h1 class="app-title" data-i18n="header_title">INDIAN SPACE HUB</h1>
+        <div class="sync-status">
           <span id="syncSpinner" class="hidden">🔄</span>
-          <span id="syncText">Sync: <span id="syncTime">--:--</span></span>
+          <span id="syncText" data-i18n="syncing">Syncing...</span>
         </div>
       </div>
     </div>
-    <div class="icon-row">
+    
+    <div class="header-actions">
       <button class="icon-btn" id="themeToggleBtn" data-i18n-title="tooltip_toggle_theme" title="Toggle Theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
       </button>
       <button class="icon-btn" id="favsToggleBtn" data-i18n-title="tooltip_show_favorites" title="Show Favorites Only">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.4 1 6.2L12 16.8 6.5 19.5l1-6.2L3 8.9 9 8z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </button>
       <button class="icon-btn" id="settingsToggleBtn" data-i18n-title="tooltip_settings" title="Settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
-  </div>
+  </header>
 
   <!-- --- FEATURED CARD: NEXT LAUNCH --- -->
-  <section class="hero" id="featuredSection">
+  <section class="glass-panel featured-card-modern" id="featuredSection">
     <div class="featured-badge-overlay" data-i18n="featured_mission">FEATURED MISSION</div>
-    
-    <div class="hero-fav-wrap" style="position: absolute; right: 16px; top: 16px; z-index: 10;">
-      <span class="favorite-star" id="heroFavStar" data-i18n-title="tooltip_add_reminder" title="Add to reminders">★</span>
-    </div>
-
-    <div class="eyebrow"><span class="pulse"></span> <span data-i18n="featured_mission">Featured Mission</span></div>
-
-    <div class="traj">
-      <svg viewBox="0 0 300 40" preserveAspectRatio="none">
-        <path id="arcPath" d="M4 36 C 90 36, 140 6, 296 6" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-linecap="round"/>
-        <path id="arcFill" d="M4 36 C 90 36, 140 6, 296 6" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round"/>
-        <circle id="arcDot" cx="4" cy="36" r="5" fill="#fff"/>
-      </svg>
-    </div>
-
-    <div class="countdown" id="heroCountdown">
-      <div class="unit"><div class="val" id="daysVal">--</div><div class="lbl" data-i18n="days">days</div></div>
-      <div class="unit"><div class="val" id="hoursVal">--</div><div class="lbl" data-i18n="hours">hrs</div></div>
-      <div class="unit"><div class="val" id="minsVal">--</div><div class="lbl" data-i18n="minutes">mins</div></div>
-      <div class="unit now"><div class="val" id="secsVal">--</div><div class="lbl" data-i18n="seconds">secs</div></div>
-    </div>
-    
-    <!-- TBD badge shown when status is TBD -->
-    <div class="tbd-badge hidden" id="heroBadgeTBD" style="margin-bottom: 14px; text-align: center;">
-      <span class="tbd-text" data-i18n="badge_tbd">📅 TBD</span>
-    </div>
-
-    <div class="pills">
-      <div class="pill date" id="heroLaunchDate">—</div>
-      <div class="pill window" id="heroWindowBadge">🕒 <span id="heroLaunchWindow">—</span></div>
-    </div>
-
-    <div class="rocket-wrap" id="rocketWrap">
-      <svg width="78" height="130" viewBox="0 0 78 130" fill="none">
-        <path d="M39 5 C55 20 58 55 58 82 L20 82 C20 55 23 20 39 5Z" fill="#e7ebf2"/>
-        <path d="M39 5 C46 15 50 32 51 55 L27 55 C28 32 32 15 39 5Z" fill="#c3cadb"/>
-        <circle cx="39" cy="46" r="7" fill="#2f7dff"/>
-        <circle cx="39" cy="46" r="7" fill="none" stroke="#070c18" stroke-width="1.5"/>
-        <path d="M20 82 L4 100 L20 96Z" fill="#a7afc2"/>
-        <path d="M58 82 L74 100 L58 96Z" fill="#a7afc2"/>
-        <rect x="20" y="70" width="38" height="5" fill="#ff9f1c"/>
-        <path d="M39 100 C30 114 33 124 39 128 C45 124 48 114 39 100Z" fill="#ff8a3d">
-          <animate attributeName="d"
-            values="M39 100 C30 114 33 124 39 128 C45 124 48 114 39 100Z;
-                    M39 100 C27 117 31 126 39 128 C47 126 51 117 39 100Z;
-                    M39 100 C30 114 33 124 39 128 C45 124 48 114 39 100Z"
-            dur="0.5s" repeatCount="indefinite"/>
-        </path>
-      </svg>
-    </div>
-
-    <div class="foot">
-      <div>
-        <div class="name" id="heroMissionName">Vikram-1</div>
-        <div class="agency" id="heroRocketName">Skyroot Aerospace · Launch Rocket</div>
-        <span class="badge-agency hidden" id="heroAgency">ISRO</span>
+    <div class="hero-top-row flex justify-between items-start">
+      <!-- Countdown or TBD -->
+      <div class="countdown-container-modern" id="heroCountdown">
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="daysVal">00</span>
+          <span class="countdown-label" data-i18n="days">Days</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="hoursVal">00</span>
+          <span class="countdown-label" data-i18n="hours">Hrs</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="minsVal">00</span>
+          <span class="countdown-label" data-i18n="minutes">Mins</span>
+        </div>
+        <div class="countdown-box-modern">
+          <span class="countdown-val font-space" id="secsVal">00</span>
+          <span class="countdown-label" data-i18n="seconds">Secs</span>
+        </div>
       </div>
-      <div class="agency-link" id="agencyLink">Skyroot Aerospace ›</div>
+      <!-- TBD badge shown when status is TBD -->
+      <div class="tbd-badge hidden" id="heroBadgeTBD">
+        <span class="tbd-text" data-i18n="badge_tbd">📅 TBD</span>
+      </div>
+      
+      <div class="hero-top-right">
+        <span class="favorite-star" id="heroFavStar" data-i18n-title="tooltip_add_reminder" title="Add to reminders">★</span>
+      </div>
+    </div>
+    
+    <div class="hero-bottom-row mt-4">
+      <div class="hero-date-badge mb-2">
+        <span id="heroLaunchDate">November 20, 2026</span>
+      </div>
+      <!-- Launch Window -->
+      <div class="hero-window-badge mb-2" id="heroWindowBadge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="heroLaunchWindow">Window: —</span>
+      </div>
+      <div class="flex justify-between items-end">
+        <div>
+          <h2 class="mission-name-hero" id="heroMissionName">Gaganyaan G1</h2>
+          <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: rgba(255,255,255,0.8);" id="heroRocketName">LVM3-M5 • Low Earth Orbit</p>
+        </div>
+        <span class="badge-agency hidden" id="heroAgency">ISRO</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
     </div>
   </section>
 
@@ -111,7 +96,7 @@
     
     <!-- Tab Navigation -->
     <div class="tab-nav" id="tabNav">
-      <button class="tab-btn" data-tab="upcoming">
+      <button class="tab-btn active" data-tab="upcoming">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3L19 12 5 21V3z"/></svg>
         <span data-i18n="tab_upcoming">Upcoming</span>
       </button>
@@ -131,7 +116,7 @@
   </section>
 
   <!-- --- UPCOMING LAUNCHES LIST --- -->
-  <section class="tab-section hidden" id="tab-upcoming">
+  <section class="tab-section active" id="tab-upcoming">
     <h3 class="section-title" data-i18n="section_upcoming">🚀 Upcoming Missions</h3>
     <div class="launches-list" id="launchesList">
       <!-- Loading skeletons (initial state) -->
@@ -286,12 +271,9 @@
   <div class="overlay" id="detailOverlay">
     <div class="modal-content">
       <div class="modal-header-banner">
-        <button class="modal-close-btn" id="modalCloseBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-          <span data-i18n="btn_back">Back</span>
-        </button>
-        <h3 class="modal-title" id="modalTitle" data-i18n="modal_profile_title">Mission Profile</h3>
         <span class="modal-header-rocket">🚀</span>
+        <h3 class="modal-title" id="modalTitle" data-i18n="modal_profile_title">Mission Profile</h3>
+        <button class="modal-close-btn" id="modalCloseBtn">✕</button>
       </div>
       <div class="modal-body">
         <div class="detail-grid">
@@ -316,17 +298,11 @@
           <span class="detail-label" data-i18n="modal_label_orbit">Orbit Target</span>
           <span class="detail-val" id="modalOrbit">Low Earth Orbit (LEO)</span>
         </div>
-        <div class="detail-item mb-4">
+        <div class="detail-item">
           <span class="detail-label" data-i18n="modal_label_payload">Payload &amp; Overview</span>
           <div class="detail-desc-box" id="modalDesc">
             Mission description goes here...
           </div>
-        </div>
-        <div class="detail-link-container" id="modalLinkContainer">
-          <a class="modal-source-btn" id="modalSourceLink" href="#" target="_blank">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            <span data-i18n="modal_btn_source">View Mission Details on Web</span>
-          </a>
         </div>
       </div>
     </div>
