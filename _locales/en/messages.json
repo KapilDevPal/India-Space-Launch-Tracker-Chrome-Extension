@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "ISRO launches & news unofficial",
+    "message": "India & Global Space Hub",
     "description": "The name of the extension."
   },
   "appDesc": {
-    "message": "Track ISRO launches, Chandrayaan missions, PSLV rockets, live countdowns, satellite launches, and Indian space updates in real time.",
+    "message": "Track Indian & global space launches – ISRO, SpaceX, NASA, ESA and more. Live countdowns, mission news, moon calendar.",
     "description": "The description of the extension."
   },
   "appTitle": {
-    "message": "ISRO launches & news unofficial",
+    "message": "India & Global Space Hub",
     "description": "Default action title for the extension popup."
   },
   "btn_back": {
@@ -480,5 +480,37 @@
   "news_recent": {
     "message": "Recent",
     "description": "Translation for key: news_recent"
+  },
+  "tab_global": {
+    "message": "Global",
+    "description": "Global launches tab label"
+  },
+  "section_global": {
+    "message": "🌍 Global Launches",
+    "description": "Global launches section title"
+  },
+  "global_upcoming": {
+    "message": "Upcoming",
+    "description": "Global upcoming toggle"
+  },
+  "global_history": {
+    "message": "History",
+    "description": "Global history toggle"
+  },
+  "filter_india": {
+    "message": "🇮🇳 India",
+    "description": "India filter pill"
+  },
+  "filter_global": {
+    "message": "🌍 Global",
+    "description": "Global filter pill"
+  },
+  "empty_global": {
+    "message": "No global launches found.",
+    "description": "Empty state global list"
+  },
+  "search_placeholder_global": {
+    "message": "Search agencies, rockets...",
+    "description": "Global search placeholder"
   }
 }

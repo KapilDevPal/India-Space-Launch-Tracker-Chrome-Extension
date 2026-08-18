@@ -97,11 +97,16 @@ if (typeof chrome === "undefined" || !chrome.storage || !chrome.storage.local) {
 
 // State Management
 let launches = [];
+let globalLaunches = [];
 let favorites = [];
 let currentTheme = "dark";
 let searchQuery = "";
+let globalSearchQuery = "";
+let globalRegion = "india"; // 'india' | 'global'
+let globalSubTab = "upcoming"; // 'upcoming' | 'history'
 let showFavsOnly = false;
 let countdownInterval = null;
+let globalCountdownInterval = null;
 let activeTab = null;
 let previousActiveTab = null;
 
@@ -151,6 +156,10 @@ const modalDesc = document.getElementById("modalDesc");
 const modalSourceLink = document.getElementById("modalSourceLink");
 const modalLinkContainer = document.getElementById("modalLinkContainer");
 
+// Global Tab DOM References
+const globalLaunchesList = document.getElementById("globalLaunchesList");
+const globalSearchInput = document.getElementById("globalSearchInput");
+
 
 // --- INITIALIZATION ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -190,9 +199,10 @@ function initDashboard() {
   localizeHtml();
   // 1. Fetch values from local storage
   chrome.storage.local.get(
-    ["launchData", "favorites", "theme", "lastSyncTime", "apiUrl", "apiKey", "remindersEnabled"],
+    ["launchData", "globalLaunchData", "favorites", "theme", "lastSyncTime", "apiUrl", "apiKey", "remindersEnabled"],
     (res) => {
       launches = res.launchData || [];
+      globalLaunches = res.globalLaunchData || [];
       favorites = res.favorites || [];
       currentTheme = res.theme || "dark";
 
@@ -264,7 +274,7 @@ function initDashboard() {
         if (controlsContainer) controlsContainer.classList.remove("hidden");
         renderDashboard();
       } else {
-        // For news and moon, hide hero and search box to maximize space
+        // For news, moon, global hide hero and search box to maximize space
         if (featuredSection) featuredSection.classList.add("hidden");
         if (searchBox) searchBox.classList.add("hidden");
         if (controlsContainer) controlsContainer.classList.remove("hidden");
@@ -279,6 +289,12 @@ function initDashboard() {
             const year = parseInt(yearSelect.value, 10) || new Date().getFullYear();
             fetchMoonCalendar(month, year).then(renderMoonCalendar);
           }
+        } else if (tab === "global") {
+          // Reload global data from storage then render
+          chrome.storage.local.get(["globalLaunchData"], (res) => {
+            globalLaunches = res.globalLaunchData || [];
+            renderGlobalTab();
+          });
         }
       }
     }
@@ -391,10 +407,12 @@ function triggerForceSync() {
 
     if (response && response.success) {
       // Reload refreshed data from storage
-      chrome.storage.local.get(["launchData", "lastSyncTime"], (res) => {
+      chrome.storage.local.get(["launchData", "globalLaunchData", "lastSyncTime"], (res) => {
         launches = res.launchData || [];
+        globalLaunches = res.globalLaunchData || [];
         updateSyncStatusText(res.lastSyncTime);
         renderDashboard();
+        if (activeTab === "global") renderGlobalTab();
       });
     } else {
       // Handle error state gracefully by keeping existing cache
@@ -1032,6 +1050,254 @@ function generateLocalMoonCalendar(month, year) {
   }
   return daysList;
 }
+
+/* ============================================================
+   GLOBAL LAUNCHES TAB
+   ============================================================ */
+
+// Determine if a launch is an Indian launch
+function isIndiaLaunch(l) {
+  if (!l) return false;
+  const provider = (l.company_name || l.provider || "").toLowerCase();
+  const name = (l.mission_name || l.name || "").toLowerCase();
+  const site = (l.launch_site || "").toLowerCase();
+  return provider.includes("isro") || provider.includes("skyroot") ||
+         provider.includes("agnikul") || provider.includes("pixxel") ||
+         name.includes("gaganyaan") || name.includes("chandrayaan") ||
+         name.includes("pslv") || name.includes("gslv") || name.includes("sslv") ||
+         site.includes("sriharikota") || site.includes("sdsc");
+}
+
+function getGlobalAgencyClass(company) {
+  const co = (company || "").toLowerCase();
+  if (co.includes("spacex")) return "dot-spacex";
+  if (co.includes("nasa")) return "dot-nasa";
+  if (co.includes("esa") || co.includes("ariane")) return "dot-esa";
+  if (co.includes("roscosmos") || co.includes("soyuz")) return "dot-roscosmos";
+  if (co.includes("blue origin")) return "dot-blue-origin";
+  if (co.includes("cnsa") || co.includes("long march")) return "dot-cnsa";
+  if (co.includes("isro") || co.includes("skyroot") || co.includes("agnikul")) return "dot-isro";
+  return "dot-other";
+}
+
+function renderGlobalTab() {
+  const list = document.getElementById("globalLaunchesList");
+  const featuredCard = document.getElementById("globalFeaturedCard");
+  if (!list) return;
+
+  const now = Date.now();
+
+  // Determine the pool of launches based on region
+  let pool;
+  if (globalRegion === "india") {
+    pool = [...launches, ...globalLaunches].filter(isIndiaLaunch);
+  } else {
+    // Strictly non-India (pure global)
+    pool = globalLaunches.filter(l => !isIndiaLaunch(l));
+  }
+
+  // Apply search filter
+  if (globalSearchQuery) {
+    pool = pool.filter(l =>
+      (l.mission_name || l.name || "").toLowerCase().includes(globalSearchQuery) ||
+      (l.company_name || "").toLowerCase().includes(globalSearchQuery) ||
+      (l.vehicle || "").toLowerCase().includes(globalSearchQuery) ||
+      (l.launch_site || "").toLowerCase().includes(globalSearchQuery)
+    );
+  }
+
+  // Split upcoming vs history
+  const upcoming = pool
+    .filter(l => new Date(l.launch_date_end || l.launch_date) > now || (l.status || "").toLowerCase() === "tbd")
+    .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
+  const history = pool
+    .filter(l => new Date(l.launch_date_end || l.launch_date) <= now && (l.status || "").toLowerCase() !== "tbd")
+    .sort((a, b) => new Date(b.launch_date) - new Date(a.launch_date));
+
+  const displayList = globalSubTab === "upcoming" ? upcoming : history;
+
+  // Render featured card (only for upcoming)
+  const featuredLaunch = upcoming[0] || null;
+  if (featuredLaunch && globalSubTab === "upcoming" && !globalSearchQuery) {
+    if (featuredCard) {
+      featuredCard.classList.remove("hidden");
+      renderGlobalFeaturedCard(featuredLaunch);
+    }
+  } else {
+    if (featuredCard) featuredCard.classList.add("hidden");
+    stopGlobalCountdown();
+  }
+
+  // Render list (skip featured launch from list)
+  list.innerHTML = "";
+  const listItems = globalSubTab === "upcoming" ? displayList.slice(1) : displayList;
+
+  if (listItems.length === 0 && displayList.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-rocket">🌍</div>
+        <p>${chrome.i18n.getMessage("empty_global") || "No global launches found."}</p>
+        <p class="text-xs" style="color: var(--text-muted); margin-top: 4px;">Check back later or change region</p>
+      </div>
+    `;
+    return;
+  }
+
+  listItems.forEach(launch => {
+    const launchItem = document.createElement("div");
+    launchItem.className = "launch-item global-launch-item";
+    launchItem.addEventListener("click", () => openMissionModal(launch));
+
+    const isTBD = (launch.status || "").toLowerCase() === "tbd";
+    const isPast = new Date(launch.launch_date_end || launch.launch_date) <= now && !isTBD;
+    const uiLang = chrome.i18n.getUILanguage();
+    const cleanDate = isTBD ? "TBD" : new Date(launch.launch_date).toLocaleDateString(uiLang, { month: "short", day: "numeric" });
+
+    let timerStr = "";
+    if (isPast) {
+      const statusText = launch.status === "success" ? "✅ SUCCESS" : launch.status === "failure" ? "❌ FAILURE" : "COMPLETED";
+      timerStr = `<span class="status-badge status-completed">${statusText}</span>`;
+    } else if (isTBD) {
+      timerStr = `<span class="status-badge status-tbd">TBD</span>`;
+    } else {
+      timerStr = `<span class="launch-item-time-val" data-launchtime="${launch.launch_date_end || launch.launch_date}">Loading...</span>`;
+    }
+
+    const agencyClass = getGlobalAgencyClass(launch.company_name || "");
+    const vehicle = launch.vehicle || launch.description?.match(/(?:Falcon|Starship|SLS|Soyuz|Ariane|Long March|New Glenn)[-\w ]*/i)?.[0] || "Launcher";
+
+    launchItem.innerHTML = `
+      <div class="launch-item-info">
+        <div class="launch-item-header">
+          <span class="agency-dot ${agencyClass}"></span>
+          <span class="launch-item-title">${launch.mission_name || launch.name}</span>
+        </div>
+        <span class="launch-item-sub">${launch.company_name || "Agency"} • ${vehicle}</span>
+        ${launch.launch_site ? `<span class="launch-item-site">📍 ${launch.launch_site}</span>` : ""}
+      </div>
+      <div class="launch-item-timer">
+        <div>${timerStr}</div>
+        <div class="launch-item-date">${cleanDate}</div>
+      </div>
+    `;
+
+    list.appendChild(launchItem);
+  });
+
+  // Start ticking timers
+  tickAllListTimers();
+}
+
+function renderGlobalFeaturedCard(launch) {
+  const nameEl = document.getElementById("globalFeaturedName");
+  const metaEl = document.getElementById("globalFeaturedMeta");
+  const regionEl = document.getElementById("globalFeaturedRegion");
+  const cdEl = document.getElementById("globalFeaturedCountdown");
+
+  if (!nameEl || !metaEl) return;
+
+  nameEl.textContent = launch.mission_name || launch.name || "Unknown Mission";
+  metaEl.textContent = `${launch.company_name || "Agency"} • ${launch.vehicle || "Rocket"} • ${launch.orbit || ""} • ${launch.launch_site || ""}`;
+  if (regionEl) {
+    regionEl.textContent = isIndiaLaunch(launch) ? "🇮🇳 India" : "🌍 Global";
+  }
+
+  const featuredCard = document.getElementById("globalFeaturedCard");
+  if (featuredCard) {
+    featuredCard.setAttribute("data-launchtime", launch.launch_date_end || launch.launch_date);
+    featuredCard.onclick = () => openMissionModal(launch);
+  }
+
+  // Start countdown
+  stopGlobalCountdown();
+  const isTBD = (launch.status || "").toLowerCase() === "tbd";
+  if (!isTBD && cdEl) {
+    cdEl.classList.remove("hidden");
+    tickGlobalCountdown();
+    globalCountdownInterval = setInterval(tickGlobalCountdown, 1000);
+  } else if (cdEl) {
+    cdEl.classList.add("hidden");
+  }
+}
+
+function tickGlobalCountdown() {
+  const featuredCard = document.getElementById("globalFeaturedCard");
+  if (!featuredCard || featuredCard.classList.contains("hidden")) return;
+
+  const launchTimeStr = featuredCard.getAttribute("data-launchtime");
+  if (!launchTimeStr) return;
+
+  const diff = new Date(launchTimeStr) - Date.now();
+  const gDays = document.getElementById("gDays");
+  const gHours = document.getElementById("gHours");
+  const gMins = document.getElementById("gMins");
+  const gSecs = document.getElementById("gSecs");
+
+  if (!gDays || !gHours || !gMins || !gSecs) return;
+
+  if (diff <= 0) {
+    gDays.textContent = "00";
+    gHours.textContent = "00";
+    gMins.textContent = "00";
+    gSecs.textContent = "00";
+    return;
+  }
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+  gDays.textContent = String(d).padStart(2, "0");
+  gHours.textContent = String(h).padStart(2, "0");
+  gMins.textContent = String(m).padStart(2, "0");
+  gSecs.textContent = String(s).padStart(2, "0");
+}
+
+function stopGlobalCountdown() {
+  if (globalCountdownInterval) {
+    clearInterval(globalCountdownInterval);
+    globalCountdownInterval = null;
+  }
+}
+
+// Initialize global tab listeners (called once from DOMContentLoaded)
+function initGlobalTabListeners() {
+  // Region switcher
+  const regionBtns = document.querySelectorAll(".region-btn");
+  regionBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      globalRegion = btn.getAttribute("data-region");
+      regionBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderGlobalTab();
+    });
+  });
+
+  // Sub-toggle (upcoming / history)
+  const subToggleBtns = document.querySelectorAll(".sub-toggle-btn");
+  subToggleBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      globalSubTab = btn.getAttribute("data-gtab");
+      subToggleBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderGlobalTab();
+    });
+  });
+
+  // Global search
+  if (globalSearchInput) {
+    globalSearchInput.addEventListener("input", (e) => {
+      globalSearchQuery = e.target.value.toLowerCase().trim();
+      renderGlobalTab();
+    });
+  }
+}
+
+// Register the global tab listeners at init time
+document.addEventListener("DOMContentLoaded", () => {
+  initGlobalTabListeners();
+});
 
 function renderMoonCalendar(days) {
   const grid = document.getElementById("moonCalendarGrid");

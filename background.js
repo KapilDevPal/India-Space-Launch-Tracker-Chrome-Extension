@@ -1,6 +1,7 @@
 // Background service worker for Indian Space Hub Extension
 
 const DEFAULT_API_URL = "https://space.veerexa.com/api/space/upcoming_launches";
+const GLOBAL_API_URL = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?format=json&limit=30&ordering=net";
 const FALLBACK_API_KEY = "isro_live_7e96e0d26a773dec3256864c91f93681";
 
 // Mock data to seed storage immediately so the extension has a valid state on load or offline
@@ -88,6 +89,122 @@ const MOCK_LAUNCHES = [
   }
 ];
 
+// Global launch mock data (international agencies)
+const MOCK_GLOBAL_LAUNCHES = [
+  {
+    id: "gl-001",
+    mission_name: "Starship IFT-7",
+    slug: "starship-ift-7",
+    launch_date: "2026-09-15T18:00:00.000Z",
+    status: "upcoming",
+    description: "Seventh integrated flight test of SpaceX's Starship Super Heavy launch system from Starbase, Boca Chica, testing full booster catch and ship propulsive landing.",
+    company_name: "SpaceX",
+    vehicle: "Starship / Super Heavy",
+    launch_site: "Starbase, Boca Chica, TX",
+    orbit: "Trans-atmospheric",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-002",
+    mission_name: "Artemis IV",
+    slug: "artemis-iv",
+    launch_date: "2026-12-01T04:00:00.000Z",
+    status: "upcoming",
+    description: "NASA's Artemis IV crewed lunar mission. Astronauts will dock with the Gateway lunar space station and prepare for surface operations.",
+    company_name: "NASA",
+    vehicle: "SLS Block 1B",
+    launch_site: "LC-39B, Kennedy Space Center",
+    orbit: "Lunar",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-003",
+    mission_name: "Falcon 9 — Starlink Group 10-3",
+    slug: "falcon9-starlink-10-3",
+    launch_date: "2026-08-25T22:30:00.000Z",
+    status: "upcoming",
+    description: "SpaceX Falcon 9 carrying a batch of Starlink v2 Mini satellites to low Earth orbit from Cape Canaveral.",
+    company_name: "SpaceX",
+    vehicle: "Falcon 9 Block 5",
+    launch_site: "SLC-40, Cape Canaveral SFS",
+    orbit: "LEO",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-004",
+    mission_name: "Eutelsat KONNECT VHTS",
+    slug: "eutelsat-konnect-vhts",
+    launch_date: "2026-10-10T21:00:00.000Z",
+    status: "upcoming",
+    description: "Arianespace Ariane 6 mission deploying the EUTELSAT KONNECT VHTS high-throughput broadband satellite to geostationary transfer orbit.",
+    company_name: "Arianespace / ESA",
+    vehicle: "Ariane 62",
+    launch_site: "ELA-4, Guiana Space Centre",
+    orbit: "GTO",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-005",
+    mission_name: "Soyuz MS-28",
+    slug: "soyuz-ms-28",
+    launch_date: "2026-09-24T09:00:00.000Z",
+    status: "upcoming",
+    description: "Roscosmos Soyuz MS-28 crewed spacecraft delivering new ISS crew members including a cosmonaut and NASA astronaut to the International Space Station.",
+    company_name: "Roscosmos",
+    vehicle: "Soyuz-2.1a",
+    launch_site: "Site 31/6, Baikonur Cosmodrome",
+    orbit: "LEO/ISS",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-006",
+    mission_name: "New Glenn — Blue Ring Demo",
+    slug: "new-glenn-blue-ring-demo",
+    launch_date: "2026-11-08T07:00:00.000Z",
+    status: "upcoming",
+    description: "Blue Origin New Glenn rocket carrying the Blue Ring multi-mission space vehicle for an orbital demonstration mission from Cape Canaveral.",
+    company_name: "Blue Origin",
+    vehicle: "New Glenn",
+    launch_site: "LC-36, Cape Canaveral SFS",
+    orbit: "GTO",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-007",
+    mission_name: "Tianwen-2",
+    slug: "tianwen-2",
+    launch_date: "2026-09-01T02:00:00.000Z",
+    status: "upcoming",
+    description: "China's asteroid and comet sample return mission targeting near-Earth asteroid 469219 Kamo'oalewa and later a comet in the main belt.",
+    company_name: "CNSA",
+    vehicle: "Long March 3B",
+    launch_site: "Xichang Satellite Launch Center",
+    orbit: "Heliocentric / Deep Space",
+    image_url: "",
+    is_global: true
+  },
+  {
+    id: "gl-101",
+    mission_name: "Crew Dragon Endurance — Crew-9",
+    slug: "crew-dragon-crew-9",
+    launch_date: "2024-09-29T06:17:00.000Z",
+    status: "success",
+    description: "SpaceX Crew Dragon Endurance carried two NASA astronauts to the ISS on Crew-9, also bringing back Butch Wilmore and Suni Williams.",
+    company_name: "SpaceX / NASA",
+    vehicle: "Falcon 9 / Crew Dragon",
+    launch_site: "LC-39A, Kennedy Space Center",
+    orbit: "LEO/ISS",
+    image_url: "",
+    is_global: true
+  }
+];
+
 // Initialize extension state on installation
 chrome.runtime.onInstalled.addListener(() => {
   console.log("Indian Space Hub Extension Installed.");
@@ -98,6 +215,7 @@ chrome.runtime.onInstalled.addListener(() => {
     if (!res.apiUrl) updates.apiUrl = DEFAULT_API_URL;
     if (!res.apiKey) updates.apiKey = FALLBACK_API_KEY;
     if (!res.launchData) updates.launchData = MOCK_LAUNCHES;
+    if (!res.globalLaunchData) updates.globalLaunchData = MOCK_GLOBAL_LAUNCHES;
     if (res.remindersEnabled === undefined) updates.remindersEnabled = true;
     if (!res.favorites) updates.favorites = [];
     if (!res.sentNotifications) updates.sentNotifications = [];
@@ -107,6 +225,7 @@ chrome.runtime.onInstalled.addListener(() => {
       updateBadge(res.launchData || MOCK_LAUNCHES);
       scheduleSyncAlarm();
       fetchLaunchData(); // Initial immediate sync
+      fetchGlobalLaunchData(); // Initial global sync
     });
   });
 });
@@ -124,8 +243,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "forceSync") {
-    fetchLaunchData()
-      .then((data) => {
+    Promise.all([fetchLaunchData(), fetchGlobalLaunchData()])
+      .then(([data]) => {
         sendResponse({ success: true, count: data ? data.length : 0 });
       })
       .catch((err) => {
@@ -244,6 +363,64 @@ async function fetchLaunchData() {
         chrome.storage.local.set({ lastSyncTime: new Date().toISOString() + " (Offline)" }, () => {
           resolve(res.launchData || MOCK_LAUNCHES);
         });
+      }
+    });
+  });
+}
+
+// Fetch global launch schedules from The Space Devs API (LL2)
+async function fetchGlobalLaunchData() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(["globalLaunchData"], async (res) => {
+      try {
+        const response = await fetch(GLOBAL_API_URL, {
+          headers: { "Accept": "application/json" },
+          cache: "no-store"
+        });
+        
+        if (!response.ok) throw new Error(`Global API HTTP ${response.status}`);
+        
+        const json = await response.json();
+        const results = json.results || [];
+        
+        // Normalize The Space Devs LL2 format to our internal format
+        const normalized = results.map(l => ({
+          id: `gl-${l.id}`,
+          mission_name: l.name || l.mission?.name || "Unknown Mission",
+          slug: l.slug || String(l.id),
+          launch_date: l.net || l.window_start,
+          launch_date_end: l.window_end,
+          status: (l.status?.abbrev || "TBD").toLowerCase() === "go" ? "upcoming" :
+                  (l.status?.abbrev || "TBD").toLowerCase() === "success" ? "success" :
+                  (l.status?.abbrev || "TBD").toLowerCase() === "failure" ? "failure" : "upcoming",
+          description: l.mission?.description || l.name || "",
+          company_name: l.launch_service_provider?.name || l.rocket?.configuration?.manufacturer?.name || "Unknown Agency",
+          vehicle: l.rocket?.configuration?.name || "Unknown Vehicle",
+          launch_site: l.pad?.name || l.pad?.location?.name || "Unknown Site",
+          orbit: l.mission?.orbit?.abbrev || "Unknown",
+          image_url: l.image || l.rocket?.configuration?.image_url || "",
+          is_global: true
+        }));
+        
+        if (normalized.length === 0) throw new Error("No global launches in response");
+        
+        // Merge with old global data to keep history
+        const oldGlobal = res.globalLaunchData || [];
+        const newIds = new Set(normalized.map(l => String(l.id)));
+        const merged = [...normalized];
+        oldGlobal.forEach(old => { if (!newIds.has(String(old.id))) merged.push(old); });
+        
+        chrome.storage.local.set({ globalLaunchData: merged }, () => {
+          console.log(`[Global] Synced ${normalized.length} global launches.`);
+          resolve(merged);
+        });
+        
+      } catch (err) {
+        console.warn("[Global] API fetch failed, using cached/mock data:", err.message);
+        // Fall back to cached data or mock data
+        const fallback = res.globalLaunchData || MOCK_GLOBAL_LAUNCHES;
+        chrome.storage.local.set({ globalLaunchData: fallback });
+        resolve(fallback);
       }
     });
   });

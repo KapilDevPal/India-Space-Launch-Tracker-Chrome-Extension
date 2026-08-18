@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "ISRO launches & news unofficial",
-  "version": "2.0.0",
+  "name": "India & Global Space Hub",
+  "version": "2.1.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "icons": {
@@ -16,7 +16,7 @@
       "48": "icons/chopper_icon.png",
       "128": "icons/chopper_icon.png"
     },
-    "default_title": "ISRO launches & news unofficial"
+    "default_title": "India & Global Space Hub"
   },
   "background": {
     "service_worker": "background.js"
@@ -28,6 +28,8 @@
   ],
   "host_permissions": [
     "https://space.veerexa.com/*",
-    "https://api.spaceflightnewsapi.net/*"
+    "https://api.spaceflightnewsapi.net/*",
+    "https://ll.thespacedevs.com/*",
+    "https://fdo.rocketlaunch.live/*"
   ]
 }

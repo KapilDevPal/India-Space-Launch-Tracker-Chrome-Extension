@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="appTitle">Indian Space Hub</title>
+  <title data-i18n="appTitle">India & Global Space Hub</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
         </svg>
       </div>
       <div class="brand-text">
-        <div class="word" data-i18n="header_title">INDIAN SPACE <span class="hub">HUB</span></div>
+        <div class="word" data-i18n="header_title">INDIA & GLOBAL <span class="hub">SPACE HUB</span></div>
         <div class="sync">
           <span id="syncSpinner" class="hidden">🔄</span>
           <span id="syncText">Sync: <span id="syncTime">--:--</span></span>
@@ -127,6 +127,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         <span data-i18n="tab_moon">Moon</span>
       </button>
+      <button class="tab-btn" data-tab="global">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span data-i18n="tab_global">Global</span>
+      </button>
     </div>
   </section>
 
@@ -157,6 +161,64 @@
       <div class="skeleton-card"></div>
       <div class="skeleton-card"></div>
       <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- --- GLOBAL LAUNCHES SECTION --- -->
+  <section class="tab-section hidden" id="tab-global">
+    <div class="global-header">
+      <h3 class="section-title" data-i18n="section_global">🌍 Global Launches</h3>
+      <!-- India / Global Region Switcher -->
+      <div class="region-switcher" id="regionSwitcher">
+        <button class="region-btn active" id="regionIndia" data-region="india">
+          <span>🇮🇳</span><span data-i18n="filter_india">India</span>
+        </button>
+        <button class="region-btn" id="regionGlobal" data-region="global">
+          <span>🌍</span><span data-i18n="filter_global">Global</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Upcoming / History sub-toggle -->
+    <div class="global-sub-toggle" id="globalSubToggle">
+      <button class="sub-toggle-btn active" data-gtab="upcoming">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3L19 12 5 21V3z"/></svg>
+        <span data-i18n="global_upcoming">Upcoming</span>
+      </button>
+      <button class="sub-toggle-btn" data-gtab="history">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        <span data-i18n="global_history">History</span>
+      </button>
+    </div>
+
+    <!-- Search box for global tab -->
+    <div class="search-box global-search-box" id="globalSearchBox">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="globalSearchInput" data-i18n-placeholder="search_placeholder" placeholder="Search agencies, rockets...">
+    </div>
+
+    <div class="launches-list" id="globalLaunchesList">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+
+    <!-- Featured global launch card -->
+    <div class="global-featured-card hidden" id="globalFeaturedCard">
+      <div class="global-featured-inner">
+        <div class="global-featured-badge"><span class="pulse"></span> <span id="globalFeaturedRegion">🌍 Global</span></div>
+        <div class="global-featured-name" id="globalFeaturedName">—</div>
+        <div class="global-featured-meta" id="globalFeaturedMeta">—</div>
+        <div class="global-featured-countdown" id="globalFeaturedCountdown">
+          <div class="global-cd-unit"><div class="global-cd-val" id="gDays">--</div><div class="global-cd-lbl">d</div></div>
+          <div class="global-cd-sep">:</div>
+          <div class="global-cd-unit"><div class="global-cd-val" id="gHours">--</div><div class="global-cd-lbl">h</div></div>
+          <div class="global-cd-sep">:</div>
+          <div class="global-cd-unit"><div class="global-cd-val" id="gMins">--</div><div class="global-cd-lbl">m</div></div>
+          <div class="global-cd-sep">:</div>
+          <div class="global-cd-unit"><div class="global-cd-val" id="gSecs">--</div><div class="global-cd-lbl">s</div></div>
+        </div>
+      </div>
     </div>
   </section>
 
