@@ -3,164 +3,273 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISRO Launch Tracker – India Space Missions</title>
+  <title>Indian Space Hub</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <!-- --- HEADER --- -->
-  <header class="header">
-    <div class="logo-container">
-      <img src="icons/space_hub_128x128.png" id="headerRocket" class="logo-rocket" alt="ISRO Tracker Logo" style="width: 28px; height: 28px; border-radius: 50%;">
+  <header class="app-header">
+    <div class="brand">
+      <img src="icons/space_hub_128x128.png" class="brand-logo" alt="">
       <div>
-        <h1 class="app-title">INDIA SPACE</h1>
+        <div class="brand-name">Indian Space Hub</div>
         <div class="sync-status">
-          <span id="syncSpinner" class="hidden">🔄</span>
-          <span id="syncText">Syncing...</span>
+          <span class="sync-dot" id="syncDot" aria-hidden="true"></span>
+          <span id="syncText">Loading…</span>
         </div>
       </div>
-    </div>
-    
-    <div class="header-actions">
-      <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-      </button>
-      <button class="icon-btn" id="favsToggleBtn" title="Show Favorites Only">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      </button>
-
     </div>
   </header>
 
-  <!-- --- FEATURED CARD: NEXT LAUNCH --- -->
-  <section class="glass-panel featured-card-modern" id="featuredSection">
-    <div class="hero-top-row flex justify-between items-start">
-      <!-- Countdowns -->
-      <div class="countdown-container-modern" id="heroCountdown">
-        <div class="countdown-box-modern">
-          <span class="countdown-val font-space" id="daysVal">00</span>
-          <span class="countdown-label">Days</span>
-        </div>
-        <div class="countdown-box-modern">
-          <span class="countdown-val font-space" id="hoursVal">00</span>
-          <span class="countdown-label">Hrs</span>
-        </div>
-        <div class="countdown-box-modern">
-          <span class="countdown-val font-space" id="minsVal">00</span>
-          <span class="countdown-label">Mins</span>
-        </div>
-        <div class="countdown-box-modern">
-          <span class="countdown-val font-space" id="secsVal">00</span>
-          <span class="countdown-label">Secs</span>
-        </div>
+  <main class="app-main">
+
+    <!-- ============ HOME SCREEN ============ -->
+    <section class="screen" id="screen-home" role="tabpanel" aria-labelledby="tab-home">
+
+      <div id="homeLoading">
+        <div class="skeleton skeleton-hero"></div>
       </div>
-      
-      <div class="hero-top-right">
-        <span class="favorite-star" id="heroFavStar" title="Add to reminders">★</span>
-      </div>
-    </div>
-    
-    <div class="hero-bottom-row mt-4">
-      <div class="hero-date-badge mb-2">
-        <span id="heroLaunchDate">November 20, 2026</span>
-      </div>
-      <div class="flex justify-between items-end">
+
+      <div id="homeContent" class="hidden" style="display:contents;">
+        <!-- Next launch hero -->
+        <div id="heroWrap">
+          <section class="hero-card" id="featuredSection">
+            <div class="hero-eyebrow">
+              <span>🚀 Next Launch</span>
+              <button class="favorite-btn" id="heroFavBtn" aria-pressed="false" aria-label="Add to favourites" title="Add to favourites">★</button>
+            </div>
+            <h2 class="hero-mission-name" id="heroMissionName">—</h2>
+            <p class="hero-sub" id="heroRocketName">—</p>
+
+            <div class="countdown-row" id="heroCountdown" aria-live="off">
+              <div class="countdown-unit">
+                <span class="countdown-unit-val" id="daysVal">00</span>
+                <span class="countdown-unit-label">Days</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-unit-val" id="hoursVal">00</span>
+                <span class="countdown-unit-label">Hrs</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-unit-val" id="minsVal">00</span>
+                <span class="countdown-unit-label">Mins</span>
+              </div>
+              <div class="countdown-unit">
+                <span class="countdown-unit-val" id="secsVal">00</span>
+                <span class="countdown-unit-label">Secs</span>
+              </div>
+            </div>
+
+            <div class="hero-footer-row">
+              <span class="origin-badge" id="heroOriginBadge">🇮🇳 India</span>
+              <button class="btn-view-mission" id="heroViewBtn">View Mission →</button>
+            </div>
+          </section>
+        </div>
+
+        <div id="noLaunchState" class="state-panel hidden">
+          <div class="state-icon">🛰️</div>
+          <p class="state-title">No upcoming launches right now</p>
+          <p class="state-desc">Check back soon, or browse recently completed missions in Launches.</p>
+        </div>
+
+        <div id="errorState" class="state-panel hidden">
+          <div class="state-icon">📡</div>
+          <p class="state-title">Unable to load launch data</p>
+          <p class="state-desc">Showing the last cached results while we retry.</p>
+          <button class="btn-retry" id="retryBtn">↻ Retry</button>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+          <button class="quick-action" data-goto="launches"><span class="quick-action-icon">🚀</span>Launches</button>
+          <button class="quick-action" id="qaFavorites"><span class="quick-action-icon">⭐</span>Favourites</button>
+          <button class="quick-action" id="qaAlerts"><span class="quick-action-icon">🔔</span>Alerts</button>
+          <button class="quick-action" data-goto="settings"><span class="quick-action-icon">⚙️</span>Settings</button>
+        </div>
+
+        <!-- Upcoming preview -->
         <div>
-          <h2 class="mission-name-hero" id="heroMissionName">Gaganyaan G1</h2>
-          <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: rgba(255,255,255,0.8);" id="heroRocketName">LVM3-M5 • Low Earth Orbit</p>
+          <div class="section-heading">
+            <span class="section-title">Upcoming Missions</span>
+            <button class="section-link" data-goto="launches">View all</button>
+          </div>
+          <div class="mission-list" id="homePreviewList"></div>
         </div>
-        <span class="badge-agency hidden" id="heroAgency">ISRO</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+
+        <!-- Discovery fact -->
+        <div class="fact-card">
+          <span class="fact-icon">🔭</span>
+          <p class="fact-text"><span class="fact-label">Did you know?</span><span id="factText">Loading a space fact…</span></p>
+        </div>
+
+        <!-- Alert status -->
+        <div class="alert-banner" id="alertBanner">
+          <span aria-hidden="true">🔔</span>
+          <span id="alertBannerText">Launch alerts are <strong>on</strong>.</span>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- --- SEARCH & CONTROLS --- -->
-  <section class="controls-container">
-    <div class="search-box">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search mission name or rocket...">
-    </div>
-    
-    <!-- Filter Chips Scroll -->
-    <div class="filter-scroll" id="agencyFilterScroll">
-      <button class="chip active" data-agency="all">All</button>
-      <button class="chip" data-agency="isro">ISRO</button>
-      <button class="chip" data-agency="skyroot">Skyroot</button>
-      <button class="chip" data-agency="agnikul">Agnikul</button>
-      <button class="chip" data-agency="pixxel">Pixxel</button>
-      <button class="chip" data-agency="others">Others</button>
-    </div>
-  </section>
+    <!-- ============ LAUNCHES SCREEN ============ -->
+    <section class="screen hidden" id="screen-launches" role="tabpanel" aria-labelledby="tab-launches">
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search mission or rocket…" aria-label="Search missions">
+      </div>
 
-  <!-- --- UPCOMING LAUNCHES LIST --- -->
-  <section class="upcoming-section">
-    <h3 class="section-title">Upcoming Schedules</h3>
-    <div class="launches-list" id="launchesList">
-      <!-- Loading skeletons (initial state) -->
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-      <div class="skeleton-card"></div>
-    </div>
-  </section>
+      <div class="filter-row" role="group" aria-label="Filter by region">
+        <button class="chip" data-region="all" aria-pressed="true">All</button>
+        <button class="chip" data-region="india" aria-pressed="false">🇮🇳 India</button>
+        <button class="chip" data-region="global" aria-pressed="false">🌍 Global</button>
+      </div>
 
-  <!-- --- FOOTER --- -->
-  <footer class="footer">
-    <span class="footer-power">POWERED BY <a href="https://space.veerexa.com" target="_blank" class="footer-power-link">VEEREXA SPACE API</a></span>
-    <div class="footer-links">
-      <a href="https://space.veerexa.com/developers/docs" target="_blank" class="footer-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-        API Docs
-      </a>
-      <a href="https://github.com" target="_blank" class="footer-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        GitHub
-      </a>
-    </div>
-  </footer>
+      <div>
+        <div class="section-heading">
+          <span class="section-title">Missions</span>
+        </div>
+        <div class="mission-list" id="launchesList"></div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS SCREEN ============ -->
+    <section class="screen hidden" id="screen-settings" role="tabpanel" aria-labelledby="tab-settings">
+
+      <div class="settings-section">
+        <span class="section-title">Appearance</span>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-row-text">
+              <div class="setting-label">Theme</div>
+              <div class="setting-desc">Choose Light, Dark, or match your system.</div>
+            </div>
+          </div>
+          <div class="segmented" role="radiogroup" aria-label="Theme">
+            <button class="segmented-btn" data-theme-choice="system" role="radio" aria-checked="true">System</button>
+            <button class="segmented-btn" data-theme-choice="light" role="radio" aria-checked="false">Light</button>
+            <button class="segmented-btn" data-theme-choice="dark" role="radio" aria-checked="false">Dark</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section" id="notificationsSection">
+        <span class="section-title">Notifications</span>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-row-text">
+              <div class="setting-label">Launch Alerts</div>
+              <div class="setting-desc">Get notified 24h before, 1h before, and at liftoff.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="remindersToggle" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+          <hr class="divider">
+          <div class="setting-row">
+            <div class="setting-row-text">
+              <div class="setting-label">🇮🇳 Indian Missions</div>
+              <div class="setting-desc">ISRO, Skyroot, Agnikul, Pixxel and other Indian providers.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notifyIndiaToggle" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-row-text">
+              <div class="setting-label">🌍 Global Launches</div>
+              <div class="setting-desc">Major launches from providers outside India.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notifyGlobalToggle" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <span class="section-title">Data</span>
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-row-text">
+              <div class="setting-label">Last updated</div>
+              <div class="setting-desc" id="settingsSyncText">Never synced</div>
+            </div>
+          </div>
+          <button class="btn-secondary" id="refreshNowBtn">↻ Refresh now</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <span class="section-title">About</span>
+        <div class="settings-card">
+          <div class="about-row">
+            <span class="about-name">Indian Space Hub</span>
+            <span class="about-version" id="aboutVersion">Version —</span>
+          </div>
+          <a class="about-link" href="https://space.veerexa.com" target="_blank" rel="noopener">Website</a>
+          <a class="about-link" href="https://space.veerexa.com/extension-privacy" target="_blank" rel="noopener">Privacy Policy</a>
+          <p class="setting-desc">Launch data is cached on this device via Chrome's local storage. No personal data is collected or shared.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- --- BOTTOM TAB NAVIGATION --- -->
+  <nav class="tab-bar" role="tablist" aria-label="Main navigation">
+    <button class="tab-btn" id="tab-home" role="tab" aria-selected="true" aria-controls="screen-home" data-screen="home">
+      <span class="tab-btn-icon" aria-hidden="true">🏠</span>Home
+    </button>
+    <button class="tab-btn" id="tab-launches" role="tab" aria-selected="false" aria-controls="screen-launches" data-screen="launches">
+      <span class="tab-btn-icon" aria-hidden="true">🚀</span>Launches
+    </button>
+    <button class="tab-btn" id="tab-settings" role="tab" aria-selected="false" aria-controls="screen-settings" data-screen="settings">
+      <span class="tab-btn-icon" aria-hidden="true">⚙️</span>Settings
+    </button>
+  </nav>
 
   <!-- --- MODAL: MISSION DETAILS --- -->
-  <div class="overlay" id="detailOverlay">
-    <div class="modal-content">
-      <div class="modal-header-banner">
-        <span class="modal-header-rocket">🚀</span>
-        <h3 class="modal-title" id="modalTitle">Mission Profile</h3>
-        <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+  <div class="overlay" id="detailOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 class="modal-title" id="modalTitle">Mission</h3>
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close mission details">✕</button>
       </div>
       <div class="modal-body">
+        <span class="status-pill upcoming" id="modalStatusPill">Upcoming</span>
+
         <div class="detail-grid">
           <div class="detail-item">
-            <span class="detail-label">Launch Vehicle</span>
-            <span class="detail-val" id="modalVehicle">LVM3</span>
+            <span class="detail-label">Rocket</span>
+            <span class="detail-val" id="modalVehicle">—</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">Agency / Provider</span>
-            <span class="detail-val" id="modalAgency">ISRO</span>
+            <span class="detail-label">Launch Provider</span>
+            <span class="detail-val" id="modalAgency">—</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Launch Window</span>
-            <span class="detail-val" id="modalDate">November 20, 2026</span>
+            <span class="detail-val" id="modalDate">—</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">Mission Status</span>
-            <span class="detail-val" id="modalStatus" style="color: var(--color-cyan);">Upcoming</span>
+            <span class="detail-label">Countdown</span>
+            <span class="detail-val" id="modalCountdown">—</span>
           </div>
         </div>
-        <div class="detail-item mb-3">
-          <span class="detail-label">Orbit Target</span>
-          <span class="detail-val" id="modalOrbit">Low Earth Orbit (LEO)</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Payload & Overview</span>
-          <div class="detail-desc-box" id="modalDesc">
-            Mission description goes here...
+
+        <details class="more-details">
+          <summary>Mission Details</summary>
+          <div class="more-details-body">
+            <p><strong id="modalOrbit">—</strong></p>
+            <p id="modalDesc" style="margin-top:8px;">—</p>
           </div>
-        </div>
+        </details>
       </div>
     </div>
   </div>
-
-
 
   <script src="popup.js"></script>
 </body>

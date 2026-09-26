@@ -1,4 +1,4 @@
-// Background service worker for ISRO Launch Tracker – India Space Missions Extension
+// Background service worker for Indian Space Hub Extension
 
 const DEFAULT_API_URL = "https://space.veerexa.com/api/space/upcoming_launches";
 const FALLBACK_API_KEY = "isro_live_7e96e0d26a773dec3256864c91f93681";
@@ -61,16 +61,19 @@ const MOCK_LAUNCHES = [
 
 // Initialize extension state on installation
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("ISRO Launch Tracker – India Space Missions Extension Installed.");
+  console.log("Indian Space Hub Extension Installed.");
   
   // Set default settings and seed mock data to guarantee immediate functionality
-  chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], (res) => {
+  chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites", "theme", "notifyIndia", "notifyGlobal"], (res) => {
     const updates = {};
     if (!res.apiUrl) updates.apiUrl = DEFAULT_API_URL;
     if (!res.apiKey) updates.apiKey = FALLBACK_API_KEY;
     if (!res.launchData) updates.launchData = MOCK_LAUNCHES;
     if (res.remindersEnabled === undefined) updates.remindersEnabled = true;
     if (!res.favorites) updates.favorites = [];
+    if (!res.theme) updates.theme = "system";
+    if (res.notifyIndia === undefined) updates.notifyIndia = true;
+    if (res.notifyGlobal === undefined) updates.notifyGlobal = true;
     
     chrome.storage.local.set(updates, () => {
       console.log("Storage seeded successfully.");
@@ -103,6 +106,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     return true; // Keep channel open for async response
   }
+
+  if (request.action === "settingsUpdated") {
+    chrome.storage.local.get(["launchData", "favorites", "remindersEnabled", "notifyIndia", "notifyGlobal"], (res) => {
+      scheduleLaunchAlertAlarms(res.launchData || [], res.favorites || [], res.remindersEnabled, res.notifyIndia, res.notifyGlobal);
+      sendResponse({ success: true });
+    });
+    return true;
+  }
 });
 
 // Setup 5-minute background sync alarm
@@ -118,7 +129,7 @@ function scheduleSyncAlarm() {
 // Fetch launch schedules from API
 async function fetchLaunchData() {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites"], async (res) => {
+    chrome.storage.local.get(["apiUrl", "apiKey", "launchData", "remindersEnabled", "favorites", "notifyIndia", "notifyGlobal"], async (res) => {
       const url = res.apiUrl || DEFAULT_API_URL;
       const key = res.apiKey || FALLBACK_API_KEY;
       
@@ -177,7 +188,7 @@ async function fetchLaunchData() {
           console.log(`Synced ${rawLaunches.length} upcoming launches.`);
           checkForNewLaunches(oldLaunches, rawLaunches);
           updateBadge(rawLaunches);
-          scheduleLaunchAlertAlarms(rawLaunches, res.favorites || [], res.remindersEnabled);
+          scheduleLaunchAlertAlarms(rawLaunches, res.favorites || [], res.remindersEnabled, res.notifyIndia, res.notifyGlobal);
           resolve(rawLaunches);
         });
         
@@ -241,27 +252,40 @@ function updateBadge(launches) {
   chrome.action.setBadgeBackgroundColor({ color: "#0058be" }); // Slate Blue / Cyan glow base
 }
 
+// Indian launch-provider name fragments used to classify a launch as India vs Global
+const INDIAN_PROVIDERS = ["isro", "skyroot", "agnikul", "pixxel"];
+function isIndianLaunch(launch) {
+  const co = (launch.company_name || "").toLowerCase();
+  return INDIAN_PROVIDERS.some(name => co.includes(name));
+}
+
 // Schedule localized notification alarms for launches
-function scheduleLaunchAlertAlarms(launches, favorites, globalRemindersEnabled) {
+function scheduleLaunchAlertAlarms(launches, favorites, globalRemindersEnabled, notifyIndia, notifyGlobal) {
   // Clear any existing notification alarms to rebuild them cleanly
   chrome.alarms.getAll(alarms => {
     const notifyAlarms = alarms.filter(a => a.name.startsWith("notify_"));
     notifyAlarms.forEach(alarm => chrome.alarms.clear(alarm.name));
-    
+
     // If notifications are completely disabled, stop here
     if (!globalRemindersEnabled) return;
-    
+
+    // Default the granular region toggles to enabled when not yet set
+    const indiaEnabled = notifyIndia !== false;
+    const globalEnabled = notifyGlobal !== false;
+
     const now = Date.now();
     const favSet = new Set(favorites.map(id => String(id)));
-    
-    launches.forEach(launch => {
+
+    launches
+      .filter(launch => isIndianLaunch(launch) ? indiaEnabled : globalEnabled)
+      .forEach(launch => {
       const launchTime = new Date(launch.launch_date).getTime();
       const isFavorited = favSet.has(String(launch.id));
-      
+
       // We only alert for favorited missions or all missions?
       // Alerting for all space missions is awesome, but we can prioritize favorites or send standard alerts.
       // Let's schedule alarms for all upcoming missions if in future.
-      
+
       // 24 Hours Alert
       const time24h = launchTime - (24 * 60 * 60 * 1000);
       if (time24h > now) {

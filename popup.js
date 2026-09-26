@@ -1,452 +1,559 @@
-// Controller logic for ISRO Launch Tracker – India Space Missions Action Popup
+// Controller logic for Indian Space Hub popup
 
-// State Management
+// --- STATE ---
 let launches = [];
 let favorites = [];
-let currentTheme = "dark";
-let selectedAgency = "all";
+let themePref = "system";           // "system" | "light" | "dark"
+let remindersEnabled = true;
+let notifyIndia = true;
+let notifyGlobal = true;
+let regionFilter = "all";           // "all" | "india" | "global"
 let searchQuery = "";
 let showFavsOnly = false;
+let hasLoadError = false;
 let countdownInterval = null;
 
-// DOM Cache
-const headerRocket = document.getElementById("headerRocket");
-const syncSpinner = document.getElementById("syncSpinner");
+const INDIAN_PROVIDERS = ["isro", "skyroot", "agnikul", "pixxel"];
+const SPACE_FACTS = [
+  "Chandrayaan-3 made India the first country to land near the Moon's south pole, in August 2023.",
+  "ISRO's PSLV rocket has launched satellites for over 30 countries.",
+  "Aryabhata, India's first satellite, launched in 1975 aboard a Soviet rocket.",
+  "Mangalyaan reached Mars orbit on its very first attempt, on a budget under $75 million.",
+  "Skyroot Aerospace's Vikram-S was India's first privately built rocket to reach space.",
+  "Gaganyaan will be ISRO's first crewed orbital spaceflight mission.",
+  "Agnikul Cosmos 3D-prints its rocket engines almost entirely in a single piece.",
+  "India's Sriharikota launch site sits on a barrier island off the Bay of Bengal coast."
+];
+
+// --- DOM CACHE ---
+const syncDot = document.getElementById("syncDot");
 const syncText = document.getElementById("syncText");
-const themeToggleBtn = document.getElementById("themeToggleBtn");
-const favsToggleBtn = document.getElementById("favsToggleBtn");
 
-
-// Featured Elements
+const homeLoading = document.getElementById("homeLoading");
+const homeContent = document.getElementById("homeContent");
+const heroWrap = document.getElementById("heroWrap");
 const featuredSection = document.getElementById("featuredSection");
-const heroAgency = document.getElementById("heroAgency");
 const heroMissionName = document.getElementById("heroMissionName");
 const heroRocketName = document.getElementById("heroRocketName");
-const heroLaunchDate = document.getElementById("heroLaunchDate");
-const heroFavStar = document.getElementById("heroFavStar");
+const heroOriginBadge = document.getElementById("heroOriginBadge");
+const heroFavBtn = document.getElementById("heroFavBtn");
+const heroViewBtn = document.getElementById("heroViewBtn");
 const daysVal = document.getElementById("daysVal");
 const hoursVal = document.getElementById("hoursVal");
 const minsVal = document.getElementById("minsVal");
 const secsVal = document.getElementById("secsVal");
+const noLaunchState = document.getElementById("noLaunchState");
+const errorState = document.getElementById("errorState");
+const retryBtn = document.getElementById("retryBtn");
+const homePreviewList = document.getElementById("homePreviewList");
+const factText = document.getElementById("factText");
+const alertBannerText = document.getElementById("alertBannerText");
 
-// Controls Elements
 const searchInput = document.getElementById("searchInput");
-const agencyChips = document.querySelectorAll("#agencyFilterScroll .chip");
-
-// List Elements
+const regionChips = document.querySelectorAll(".chip[data-region]");
 const launchesList = document.getElementById("launchesList");
 
-// Modal Elements
+const themeChoiceBtns = document.querySelectorAll(".segmented-btn[data-theme-choice]");
+const remindersToggle = document.getElementById("remindersToggle");
+const notifyIndiaToggle = document.getElementById("notifyIndiaToggle");
+const notifyGlobalToggle = document.getElementById("notifyGlobalToggle");
+const settingsSyncText = document.getElementById("settingsSyncText");
+const refreshNowBtn = document.getElementById("refreshNowBtn");
+const aboutVersion = document.getElementById("aboutVersion");
+
+const tabBtns = document.querySelectorAll(".tab-btn[data-screen]");
+const screens = {
+  home: document.getElementById("screen-home"),
+  launches: document.getElementById("screen-launches"),
+  settings: document.getElementById("screen-settings")
+};
+
 const detailOverlay = document.getElementById("detailOverlay");
 const modalCloseBtn = document.getElementById("modalCloseBtn");
 const modalTitle = document.getElementById("modalTitle");
+const modalStatusPill = document.getElementById("modalStatusPill");
 const modalVehicle = document.getElementById("modalVehicle");
 const modalAgency = document.getElementById("modalAgency");
 const modalDate = document.getElementById("modalDate");
-const modalStatus = document.getElementById("modalStatus");
+const modalCountdown = document.getElementById("modalCountdown");
 const modalOrbit = document.getElementById("modalOrbit");
 const modalDesc = document.getElementById("modalDesc");
 
+// --- INIT ---
+document.addEventListener("DOMContentLoaded", init);
 
-// --- INITIALIZATION ---
-document.addEventListener("DOMContentLoaded", () => {
-  initDashboard();
-});
+function init() {
+  aboutVersion.textContent = `Version ${chrome.runtime.getManifest().version}`;
+  factText.textContent = SPACE_FACTS[Math.floor(Math.random() * SPACE_FACTS.length)];
 
-function initDashboard() {
-  // 1. Fetch values from local storage
   chrome.storage.local.get(
-    ["launchData", "favorites", "theme", "lastSyncTime", "apiUrl", "apiKey", "remindersEnabled"],
+    ["launchData", "favorites", "theme", "lastSyncTime", "remindersEnabled", "notifyIndia", "notifyGlobal"],
     (res) => {
       launches = res.launchData || [];
       favorites = res.favorites || [];
-      currentTheme = res.theme || "dark";
-      
-      // Seed theme
-      if (currentTheme === "light") {
-        document.body.classList.add("light-theme");
-        themeToggleBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
-      }
-      
-      // Update sync text representation
+      themePref = res.theme || "system";
+      remindersEnabled = res.remindersEnabled !== false;
+      notifyIndia = res.notifyIndia !== false;
+      notifyGlobal = res.notifyGlobal !== false;
+
+      applyTheme();
+      syncSettingsUI();
       updateSyncStatusText(res.lastSyncTime);
-      
-      // 2. Render UI immediately (cached fallback state)
-      renderDashboard();
-      
-      // 3. Initiate countdown interval ticking
+
+      homeLoading.classList.add("hidden");
+      homeContent.classList.remove("hidden");
+
+      renderAll();
       startCountdownTicker();
-      
-      // 4. Trigger foreground refresh sync upon extension open
       triggerForceSync();
     }
   );
 
-  // Set up interactive listeners
-  themeToggleBtn.addEventListener("click", toggleTheme);
-  favsToggleBtn.addEventListener("click", toggleFavoritesFilter);
+  setupThemeWatcher();
+  bindEvents();
+}
 
-  modalCloseBtn.addEventListener("click", () => detailOverlay.classList.remove("active"));
-  
+function bindEvents() {
+  // Tab navigation
+  tabBtns.forEach(btn => btn.addEventListener("click", () => switchScreen(btn.dataset.screen)));
+  document.querySelectorAll("[data-goto]").forEach(el => {
+    el.addEventListener("click", () => switchScreen(el.dataset.goto));
+  });
 
-  
-  // Search filter keyup
+  // Home quick actions
+  document.getElementById("qaFavorites").addEventListener("click", () => {
+    showFavsOnly = true;
+    switchScreen("launches");
+    renderLaunchesScreen();
+  });
+  document.getElementById("qaAlerts").addEventListener("click", () => {
+    switchScreen("settings");
+    document.getElementById("notificationsSection").scrollIntoView({ block: "start" });
+  });
+
+  retryBtn.addEventListener("click", triggerForceSync);
+  heroFavBtn.addEventListener("click", () => {
+    const id = featuredSection.getAttribute("data-launchid");
+    if (id) toggleFavorite(id);
+  });
+  heroViewBtn.addEventListener("click", () => {
+    const id = featuredSection.getAttribute("data-launchid");
+    const launch = launches.find(l => String(l.id) === String(id));
+    if (launch) openMissionModal(launch);
+  });
+
+  // Launches screen
   searchInput.addEventListener("input", (e) => {
     searchQuery = e.target.value.toLowerCase().trim();
-    renderDashboard();
+    renderLaunchesScreen();
   });
-  
-  // Agency filtering chips selection
-  agencyChips.forEach(chip => {
+  regionChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      agencyChips.forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
-      selectedAgency = chip.getAttribute("data-agency");
-      renderDashboard();
+      regionChips.forEach(c => c.setAttribute("aria-pressed", "false"));
+      chip.setAttribute("aria-pressed", "true");
+      regionFilter = chip.dataset.region;
+      showFavsOnly = false;
+      renderLaunchesScreen();
     });
   });
+
+  // Settings
+  themeChoiceBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      themePref = btn.dataset.themeChoice;
+      chrome.storage.local.set({ theme: themePref });
+      applyTheme();
+      syncSettingsUI();
+    });
+  });
+
+  remindersToggle.addEventListener("change", () => {
+    remindersEnabled = remindersToggle.checked;
+    chrome.storage.local.set({ remindersEnabled });
+    syncSettingsUI();
+    renderAlertBanner();
+    notifyBackgroundSettingsChanged();
+  });
+  notifyIndiaToggle.addEventListener("change", () => {
+    notifyIndia = notifyIndiaToggle.checked;
+    chrome.storage.local.set({ notifyIndia });
+    renderAlertBanner();
+    notifyBackgroundSettingsChanged();
+  });
+  notifyGlobalToggle.addEventListener("change", () => {
+    notifyGlobal = notifyGlobalToggle.checked;
+    chrome.storage.local.set({ notifyGlobal });
+    renderAlertBanner();
+    notifyBackgroundSettingsChanged();
+  });
+
+  refreshNowBtn.addEventListener("click", triggerForceSync);
+
+  // Modal
+  modalCloseBtn.addEventListener("click", () => detailOverlay.classList.remove("active"));
+  detailOverlay.addEventListener("click", (e) => {
+    if (e.target === detailOverlay) detailOverlay.classList.remove("active");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") detailOverlay.classList.remove("active");
+  });
 }
 
-// Update UI timestamp helper
+function notifyBackgroundSettingsChanged() {
+  chrome.runtime.sendMessage({ action: "settingsUpdated" });
+}
+
+// --- SCREEN / TAB SWITCHING ---
+function switchScreen(name) {
+  Object.entries(screens).forEach(([key, el]) => {
+    el.classList.toggle("hidden", key !== name);
+  });
+  tabBtns.forEach(btn => {
+    btn.setAttribute("aria-selected", String(btn.dataset.screen === name));
+  });
+  if (name === "launches") renderLaunchesScreen();
+}
+
+// --- THEME ---
+function effectiveTheme() {
+  if (themePref === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return themePref;
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme-effective", effectiveTheme());
+}
+
+function setupThemeWatcher() {
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener("change", () => {
+    if (themePref === "system") applyTheme();
+  });
+}
+
+function syncSettingsUI() {
+  themeChoiceBtns.forEach(btn => {
+    btn.setAttribute("aria-checked", String(btn.dataset.themeChoice === themePref));
+  });
+  remindersToggle.checked = remindersEnabled;
+  notifyIndiaToggle.checked = notifyIndia;
+  notifyGlobalToggle.checked = notifyGlobal;
+  notifyIndiaToggle.disabled = !remindersEnabled;
+  notifyGlobalToggle.disabled = !remindersEnabled;
+}
+
+// --- SYNC ---
 function updateSyncStatusText(timeStr) {
+  let display, offline = false;
   if (!timeStr) {
-    syncText.textContent = "Never Synced";
-    return;
+    display = "Never synced";
+  } else if (timeStr.includes("Offline")) {
+    display = "Offline · showing cached data";
+    offline = true;
+  } else {
+    const date = new Date(timeStr);
+    display = `Synced ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   }
-  
-  if (timeStr.includes("Offline")) {
-    syncText.textContent = "Offline (Cached Data)";
-    syncText.style.color = "var(--color-mars)";
-    return;
-  }
-  
-  const date = new Date(timeStr);
-  const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  syncText.textContent = `Sync: ${formattedTime}`;
-  syncText.style.color = "var(--text-secondary)";
+  syncText.textContent = display;
+  syncDot.classList.toggle("offline", offline);
+  settingsSyncText.textContent = display;
 }
 
-// Immediate extension load sync trigger
 function triggerForceSync() {
-  syncSpinner.classList.remove("hidden");
-  syncSpinner.classList.add("anim-spin");
-  syncText.textContent = "Syncing...";
-  
+  syncDot.classList.add("spin");
+  syncText.textContent = "Syncing…";
+
   chrome.runtime.sendMessage({ action: "forceSync" }, (response) => {
-    syncSpinner.classList.remove("anim-spin");
-    syncSpinner.classList.add("hidden");
-    
+    syncDot.classList.remove("spin");
+
     if (response && response.success) {
-      // Reload refreshed data from storage
+      hasLoadError = false;
       chrome.storage.local.get(["launchData", "lastSyncTime"], (res) => {
         launches = res.launchData || [];
         updateSyncStatusText(res.lastSyncTime);
-        renderDashboard();
+        renderAll();
       });
     } else {
-      // Handle error state gracefully by keeping existing cache
+      hasLoadError = launches.length === 0;
       chrome.storage.local.get(["lastSyncTime"], (res) => {
         updateSyncStatusText(res.lastSyncTime || "Offline");
+        renderAll();
       });
     }
   });
 }
 
-// --- RENDERING CORE ---
-function renderDashboard() {
-  // Apply Search, Agency, and Favorites filter constraints
-  const now = Date.now();
-  let filtered = [...launches];
-  
-  // Agency matching logic
-  if (selectedAgency !== "all") {
-    filtered = filtered.filter(launch => {
-      const co = (launch.company_name || "").toLowerCase();
-      if (selectedAgency === "isro") return co.includes("isro");
-      if (selectedAgency === "skyroot") return co.includes("skyroot");
-      if (selectedAgency === "agnikul") return co.includes("agnikul");
-      if (selectedAgency === "pixxel") return co.includes("pixxel");
-      if (selectedAgency === "others") {
-        return !co.includes("isro") && !co.includes("skyroot") && !co.includes("agnikul") && !co.includes("pixxel");
-      }
-      return true;
-    });
-  }
-  
-  // Search query match
-  if (searchQuery) {
-    filtered = filtered.filter(launch => 
-      (launch.mission_name || "").toLowerCase().includes(searchQuery) ||
-      (launch.description || "").toLowerCase().includes(searchQuery) ||
-      (launch.company_name || "").toLowerCase().includes(searchQuery)
-    );
-  }
-  
-  // Favorites toggle filter match
-  if (showFavsOnly) {
-    const favSet = new Set(favorites.map(id => String(id)));
-    filtered = filtered.filter(launch => favSet.has(String(launch.id)));
-  }
-  
-  // Sort chronically: future launches first, ascending
-  const upcomingFuture = filtered
-    .filter(l => new Date(l.launch_date) > now)
-    .sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
-    
-  const launchedPast = filtered
-    .filter(l => new Date(l.launch_date) <= now)
-    .sort((a, b) => new Date(b.launch_date) - new Date(a.launch_date));
-    
-  const sortedLaunches = [...upcomingFuture, ...launchedPast];
-
-  // 1. Render Featured hero card (Next valid upcoming launch)
-  if (upcomingFuture.length > 0) {
-    featuredSection.classList.remove("hidden");
-    const nextLaunch = upcomingFuture[0];
-    renderHeroCard(nextLaunch);
-  } else {
-    // Hide hero card if no upcoming missions match filter criteria
-    featuredSection.classList.add("hidden");
-  }
-  
-  // 2. Render List Container
-  renderList(sortedLaunches);
-}
-
-// Hero featured details builder
-function renderHeroCard(launch) {
-  heroMissionName.textContent = launch.mission_name;
-  
-  // Clean layout specs
-  const vehicle = launch.description?.match(/(?:PSLV|GSLV|LVM3|SSLV|Vikram|Agnibaan)[-\w]*/i)?.[0] || "Launch Rocket";
-  heroRocketName.textContent = `${launch.company_name || 'ISRO'} • ${vehicle}`;
-  heroAgency.textContent = launch.company_name || 'ISRO';
-  
-  // Clean badge classing
-  heroAgency.className = "badge-agency";
+// --- HELPERS ---
+function isIndianLaunch(launch) {
   const co = (launch.company_name || "").toLowerCase();
-  if (co.includes("isro")) heroAgency.classList.add("badge-isro");
-  else if (co.includes("skyroot")) heroAgency.classList.add("badge-skyroot");
-  else if (co.includes("agnikul")) heroAgency.classList.add("badge-agnikul");
-  else if (co.includes("pixxel")) heroAgency.classList.add("badge-pixxel");
-  
-  // Clean Date representation
-  const lDate = new Date(launch.launch_date);
-  heroLaunchDate.textContent = lDate.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric" });
-  
-  // Favorite state setting
-  const isFav = favorites.map(id => String(id)).includes(String(launch.id));
-  heroFavStar.className = isFav ? "favorite-star active" : "favorite-star";
-  
-  // Clear events and attach favorite toggle
-  heroFavStar.onclick = (e) => {
-    e.stopPropagation();
-    toggleFavorite(launch.id);
-  };
-  
-  // Modal click
-  featuredSection.onclick = () => openMissionModal(launch);
-  
-  // Set launch date on a data attribute for the timer
-  featuredSection.setAttribute("data-launchtime", launch.launch_date);
+  return INDIAN_PROVIDERS.some(name => co.includes(name));
 }
 
-// Render dynamic launch records items list
-function renderList(list) {
-  launchesList.innerHTML = "";
-  
-  if (list.length === 0) {
-    launchesList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-rocket">🛸</div>
-        <p>No space missions found.</p>
-        <p class="text-xs" style="color: var(--text-muted); margin-top: 4px;">Adjust filters or settings</p>
-      </div>
-    `;
-    return;
+function extractVehicle(launch) {
+  return launch.description?.match(/(?:PSLV|GSLV|LVM3|SSLV|Vikram|Agnibaan)[-\w]*/i)?.[0] || "Launch vehicle TBC";
+}
+
+function extractOrbit(launch) {
+  return launch.description?.match(/(?:LEO|GTO|SSO|MEO|Lunar|Sun-Synchronous|SSO polar)[-\w]*/i)?.[0] || "Low Earth Orbit (LEO)";
+}
+
+function isFavorite(id) {
+  return favorites.map(String).includes(String(id));
+}
+
+function getUpcomingSorted(list) {
+  const now = Date.now();
+  return list.filter(l => new Date(l.launch_date) > now).sort((a, b) => new Date(a.launch_date) - new Date(b.launch_date));
+}
+
+function getPastSorted(list) {
+  const now = Date.now();
+  return list.filter(l => new Date(l.launch_date) <= now).sort((a, b) => new Date(b.launch_date) - new Date(a.launch_date));
+}
+
+// --- RENDER: HOME ---
+function renderAll() {
+  renderHome();
+  renderAlertBanner();
+  if (!screens.launches.classList.contains("hidden")) renderLaunchesScreen();
+}
+
+function renderHome() {
+  const upcoming = getUpcomingSorted(launches);
+
+  errorState.classList.toggle("hidden", !hasLoadError);
+  noLaunchState.classList.toggle("hidden", hasLoadError || upcoming.length > 0);
+  heroWrap.classList.toggle("hidden", hasLoadError || upcoming.length === 0);
+
+  if (upcoming.length > 0) {
+    renderHeroCard(upcoming[0]);
   }
-  
-  list.forEach(launch => {
-    const launchItem = document.createElement("div");
-    launchItem.className = "launch-item";
-    launchItem.addEventListener("click", () => openMissionModal(launch));
-    
-    const isPast = new Date(launch.launch_date) <= Date.now();
-    const cleanDate = new Date(launch.launch_date).toLocaleDateString([], { month: "short", day: "numeric" });
-    
-    // Abbreviated countdown status
-    let timerStr = "";
-    if (isPast) {
-      timerStr = `<span style="color: var(--color-emerald); font-weight: 800; font-size:10px;">COMPLETED</span>`;
-    } else {
-      timerStr = `<span class="launch-item-time-val" data-launchtime="${launch.launch_date}">Calculating...</span>`;
-    }
-    
-    // Deduce rocket vehicle
-    const vehicle = launch.description?.match(/(?:PSLV|GSLV|LVM3|SSLV|Vikram|Agnibaan)[-\w]*/i)?.[0] || "Launcher";
-    
-    launchItem.innerHTML = `
-      <div class="launch-item-info">
-        <span class="launch-item-title">${launch.mission_name}</span>
-        <span class="launch-item-sub">${launch.company_name || 'ISRO'} • ${vehicle}</span>
-      </div>
-      <div class="launch-item-timer">
-        <div>${timerStr}</div>
-        <div class="launch-item-date">${cleanDate}</div>
-      </div>
-    `;
-    
-    launchesList.appendChild(launchItem);
-  });
-  
-  // Fire single tick check to pre-fill item elements immediately
+
+  // Preview list: next 3 upcoming (skip the hero mission)
+  homePreviewList.innerHTML = "";
+  const previewItems = upcoming.slice(1, 4);
+  if (previewItems.length === 0 && upcoming.length <= 1) {
+    homePreviewList.innerHTML = `<p class="state-desc" style="text-align:left;padding:4px 2px;">No further missions scheduled yet.</p>`;
+  } else {
+    previewItems.forEach(launch => homePreviewList.appendChild(buildMissionItem(launch)));
+  }
+
   tickAllListTimers();
 }
 
-// --- TICKING TIMERS ENGINE ---
+function renderHeroCard(launch) {
+  heroMissionName.textContent = launch.mission_name;
+  heroRocketName.textContent = `${launch.company_name || "ISRO"} • ${extractVehicle(launch)}`;
+  heroOriginBadge.textContent = isIndianLaunch(launch) ? "🇮🇳 India" : "🌍 Global";
+
+  const fav = isFavorite(launch.id);
+  heroFavBtn.setAttribute("aria-pressed", String(fav));
+  heroFavBtn.setAttribute("aria-label", fav ? "Remove from favourites" : "Add to favourites");
+
+  featuredSection.setAttribute("data-launchtime", launch.launch_date);
+  featuredSection.setAttribute("data-launchid", launch.id);
+}
+
+function renderAlertBanner() {
+  if (!remindersEnabled) {
+    alertBannerText.innerHTML = "Launch alerts are <strong>off</strong>. Turn them on in Settings.";
+    return;
+  }
+  if (notifyIndia && notifyGlobal) {
+    alertBannerText.innerHTML = "Launch alerts are <strong>on</strong> for India and Global missions.";
+  } else if (notifyIndia) {
+    alertBannerText.innerHTML = "Launch alerts are <strong>on</strong> for Indian missions only.";
+  } else if (notifyGlobal) {
+    alertBannerText.innerHTML = "Launch alerts are <strong>on</strong> for Global missions only.";
+  } else {
+    alertBannerText.innerHTML = "Launch alerts are on, but no regions are selected. Check Settings.";
+  }
+}
+
+// --- RENDER: LAUNCHES SCREEN ---
+function renderLaunchesScreen() {
+  let filtered = [...launches];
+
+  if (regionFilter === "india") filtered = filtered.filter(isIndianLaunch);
+  if (regionFilter === "global") filtered = filtered.filter(l => !isIndianLaunch(l));
+
+  if (searchQuery) {
+    filtered = filtered.filter(l =>
+      (l.mission_name || "").toLowerCase().includes(searchQuery) ||
+      (l.description || "").toLowerCase().includes(searchQuery) ||
+      (l.company_name || "").toLowerCase().includes(searchQuery)
+    );
+  }
+
+  if (showFavsOnly) {
+    filtered = filtered.filter(l => isFavorite(l.id));
+  }
+
+  const sorted = [...getUpcomingSorted(filtered), ...getPastSorted(filtered)];
+
+  launchesList.innerHTML = "";
+
+  if (hasLoadError && launches.length === 0) {
+    launchesList.innerHTML = `
+      <div class="state-panel">
+        <div class="state-icon">📡</div>
+        <p class="state-title">Unable to load launch data</p>
+        <p class="state-desc">Check your connection and try again.</p>
+        <button class="btn-retry" id="listRetryBtn">↻ Retry</button>
+      </div>`;
+    document.getElementById("listRetryBtn").addEventListener("click", triggerForceSync);
+    return;
+  }
+
+  if (sorted.length === 0) {
+    launchesList.innerHTML = `
+      <div class="state-panel">
+        <div class="state-icon">🛸</div>
+        <p class="state-title">No missions found</p>
+        <p class="state-desc">Try a different search or filter.</p>
+      </div>`;
+    return;
+  }
+
+  if (showFavsOnly) {
+    const pill = document.createElement("button");
+    pill.className = "chip";
+    pill.setAttribute("aria-pressed", "true");
+    pill.textContent = "★ Favourites only ✕";
+    pill.style.marginBottom = "8px";
+    pill.addEventListener("click", () => { showFavsOnly = false; renderLaunchesScreen(); });
+    launchesList.appendChild(pill);
+  }
+
+  sorted.forEach(launch => launchesList.appendChild(buildMissionItem(launch)));
+  tickAllListTimers();
+}
+
+function buildMissionItem(launch) {
+  const item = document.createElement("button");
+  item.className = "mission-item";
+  item.setAttribute("aria-label", `${launch.mission_name}, view mission details`);
+  item.addEventListener("click", () => openMissionModal(launch));
+
+  const isPast = new Date(launch.launch_date) <= Date.now();
+  const cleanDate = new Date(launch.launch_date).toLocaleDateString([], { month: "short", day: "numeric" });
+  const vehicle = extractVehicle(launch);
+  const origin = isIndianLaunch(launch) ? "🇮🇳" : "🌍";
+
+  item.innerHTML = `
+    <div class="mission-item-info">
+      <span class="mission-item-title">${launch.mission_name}</span>
+      <span class="mission-item-sub">${origin} ${launch.company_name || "ISRO"} • ${vehicle}</span>
+    </div>
+    <div class="mission-item-meta">
+      ${isPast
+        ? `<span class="mission-item-countdown done">COMPLETED</span>`
+        : `<span class="mission-item-countdown js-countdown" data-launchtime="${launch.launch_date}">—</span>`}
+      <div class="mission-item-date">${cleanDate}</div>
+    </div>
+  `;
+
+  return item;
+}
+
+// --- TICKING TIMERS ---
 function startCountdownTicker() {
   if (countdownInterval) clearInterval(countdownInterval);
-  
   countdownInterval = setInterval(() => {
     tickHeroCountdown();
     tickAllListTimers();
   }, 1000);
 }
 
-// Featured countdown clock renderer
 function tickHeroCountdown() {
-  if (featuredSection.classList.contains("hidden")) return;
-  
+  if (heroWrap.classList.contains("hidden")) return;
   const launchTimeStr = featuredSection.getAttribute("data-launchtime");
   if (!launchTimeStr) return;
-  
+
   const diff = new Date(launchTimeStr) - Date.now();
-  
   if (diff <= 0) {
-    // Liftoff occurred! Re-sync
     triggerForceSync();
     return;
   }
-  
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const s = Math.floor((diff % (1000 * 60)) / 1000);
-  
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
   daysVal.textContent = String(d).padStart(2, "0");
   hoursVal.textContent = String(h).padStart(2, "0");
   minsVal.textContent = String(m).padStart(2, "0");
   secsVal.textContent = String(s).padStart(2, "0");
-  
-  // Add dynamic neon pulse styling class to seconds
-  secsVal.classList.add("secs-pulse");
 }
 
-// Tick lists dynamic timers
 function tickAllListTimers() {
-  const elements = document.querySelectorAll(".launch-item-time-val");
   const now = Date.now();
-  
-  elements.forEach(el => {
+  document.querySelectorAll(".js-countdown").forEach(el => {
     const launchTime = new Date(el.getAttribute("data-launchtime")).getTime();
     const diff = launchTime - now;
-    
+
     if (diff <= 0) {
-      el.outerHTML = `<span style="color: var(--color-emerald); font-weight:800; font-size:10px;">LAUNCHED</span>`;
+      el.textContent = "LAUNCHED";
+      el.classList.add("done");
+      el.classList.remove("urgent", "js-countdown");
       return;
     }
-    
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+
     if (d > 0) {
       el.textContent = `${d}d ${h}h`;
+      el.classList.remove("urgent");
     } else if (h > 0) {
       el.textContent = `${h}h ${m}m`;
+      el.classList.remove("urgent");
     } else {
-      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      const s = Math.floor((diff % 60000) / 1000);
       el.textContent = `${m}m ${s}s`;
-      el.style.color = "var(--color-mars)"; // T-Minus less than an hour gets red/mars color
+      el.classList.add("urgent");
     }
   });
 }
 
-// --- MODAL UTILS ---
+// --- MODAL ---
 function openMissionModal(launch) {
   modalTitle.textContent = launch.mission_name;
-  
-  // Extract target vehicle
-  const vehicle = launch.description?.match(/(?:PSLV|GSLV|LVM3|SSLV|Vikram|Agnibaan)[-\w]*/i)?.[0] || "LVM3-M4 Heavy Lift";
-  modalVehicle.textContent = vehicle;
-  
-  modalAgency.textContent = launch.company_name || 'ISRO';
-  
-  // Extract Target Orbit or fallback LEO
-  const orbit = launch.description?.match(/(?:LEO|GTO|SSO|MEO|Lunar|Sun-Synchronous|SSO polar)[-\w]*/i)?.[0] || "Low Earth Orbit (LEO)";
-  modalOrbit.textContent = orbit;
-  
+  modalVehicle.textContent = extractVehicle(launch);
+  modalAgency.textContent = launch.company_name || "ISRO";
+  modalOrbit.textContent = `Target orbit: ${extractOrbit(launch)}`;
+
   const lDate = new Date(launch.launch_date);
-  modalDate.textContent = lDate.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric", hour: '2-digit', minute: '2-digit' }) + " (IST)";
-  
-  const isPast = new Date(launch.launch_date) <= Date.now();
-  modalStatus.textContent = isPast ? "Completed" : "Upcoming";
-  modalStatus.style.color = isPast ? "var(--color-emerald)" : "var(--color-cyan)";
-  
-  modalDesc.textContent = launch.description || "No specific detailed payload details are supplied for this flight. Telemetry status remains operational.";
-  
+  modalDate.textContent = lDate.toLocaleDateString([], { month: "long", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" }) + " (IST)";
+
+  const isPast = lDate.getTime() <= Date.now();
+  modalStatusPill.textContent = isPast ? "Completed" : "Upcoming";
+  modalStatusPill.className = `status-pill ${isPast ? "completed" : "upcoming"}`;
+  modalCountdown.textContent = isPast ? "Mission complete" : "Calculating…";
+  modalCountdown.classList.toggle("js-countdown", !isPast);
+  if (!isPast) modalCountdown.setAttribute("data-launchtime", launch.launch_date);
+
+  modalDesc.textContent = launch.description || "No detailed payload information has been published for this flight yet.";
+
   detailOverlay.classList.add("active");
+  modalCloseBtn.focus();
+  tickAllListTimers();
 }
 
-
-
-// --- UTILS & INTERACTIONS ---
+// --- FAVORITES ---
 function toggleFavorite(launchId) {
-  const index = favorites.map(id => String(id)).indexOf(String(launchId));
+  const index = favorites.map(String).indexOf(String(launchId));
   if (index > -1) {
-    // Remove favorite
     favorites.splice(index, 1);
   } else {
-    // Add favorite
     favorites.push(launchId);
   }
-  
-  chrome.storage.local.set({ favorites: favorites }, () => {
-    console.log("Favorites updated:", favorites);
-    
-    // Visually animate rocket in header for micro-interaction
-    headerRocket.style.transform = "translateY(-12px) scale(1.3)";
-    setTimeout(() => { headerRocket.style.transform = "none"; }, 400);
-    
-    renderDashboard();
+
+  chrome.storage.local.set({ favorites }, () => {
+    renderAll();
   });
-}
-
-function toggleFavoritesFilter() {
-  showFavsOnly = !showFavsOnly;
-  
-  favsToggleBtn.classList.toggle("active", showFavsOnly);
-  if (showFavsOnly) {
-    favsToggleBtn.style.color = "var(--color-gold)";
-    favsToggleBtn.style.borderColor = "var(--color-gold)";
-  } else {
-    favsToggleBtn.style.color = "var(--text-secondary)";
-    favsToggleBtn.style.borderColor = "var(--border-glass)";
-  }
-  
-  renderDashboard();
-}
-
-function toggleTheme() {
-  const isLight = document.body.classList.toggle("light-theme");
-  currentTheme = isLight ? "light" : "dark";
-  
-  // Icon styling mapping
-  if (isLight) {
-    themeToggleBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`;
-  } else {
-    themeToggleBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
-  }
-  
-  chrome.storage.local.set({ theme: currentTheme });
 }
